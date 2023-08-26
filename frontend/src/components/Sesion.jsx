@@ -1,8 +1,9 @@
-import { useState } from "react"
+import { useState } from "react";
+import HeaderSesion from "../elements/HeaderSesion";
+import ContentSesion from "../elements/ContentSesion";
+
 import styled from "styled-components";
 import Imagen from "../images/fondo-sesion.jpg"
-import HeaderSesion from "../elements/HeaderSesion"
-import ContentSesion from "../elements/ContentSesion";
 
 const Fondo = styled.div`
     background-image: url(${Imagen});
