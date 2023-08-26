@@ -7,12 +7,12 @@ const Contenedor = styled.div`
     display: flex;
 `;
 const Header = styled.button`
-    border: none;
     background-color: ${props => (props.inLogin ? colores.azulClaro : colores.azulOscuro)};
-    border-radius: 10px 10px 0 0;
     cursor: ${props => (props.inLogin ? "" : "pointer")};
     width: 500px;
     height: 60px;
+    border: none;
+    border-radius: 10px 10px 0 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,8 +25,8 @@ const Header = styled.button`
 const HeaderSesion = ({ inLogin, cambiarInLogin }) => {
     return (
         <Contenedor>
-            <Header inLogin={inLogin} onClick={() => cambiarInLogin(!inLogin)}>Login</Header>
-            <Header inLogin={!inLogin} onClick={() => cambiarInLogin(!inLogin)}>Sign in</Header>
+            <Header inLogin={inLogin} onClick={() => cambiarInLogin(true)}>Login</Header>
+            <Header inLogin={!inLogin} onClick={() => cambiarInLogin(false)}>Sign in</Header>
         </Contenedor>
     )
 }

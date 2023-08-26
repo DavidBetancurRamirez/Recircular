@@ -2,6 +2,7 @@ import { useState } from "react"
 import styled from "styled-components";
 import Imagen from "../images/fondo-sesion.jpg"
 import HeaderSesion from "../elements/HeaderSesion"
+import ContentSesion from "../elements/ContentSesion";
 
 const Fondo = styled.div`
     background-image: url(${Imagen});
@@ -10,7 +11,7 @@ const Fondo = styled.div`
     background-attachment: fixed;
     width: 100vw;
     height: 100vh;
-    padding: 100px;
+    padding: 80px;
 `;
 const Contenedor = styled.div`
     width: 1000px;
@@ -25,6 +26,7 @@ const Sesion = () => {
         <Fondo>
             <Contenedor>
                 <HeaderSesion inLogin={inLogin} cambiarInLogin={cambiarInLogin} />
+                <ContentSesion inLogin={inLogin} cambiarInLogin={cambiarInLogin} />
             </Contenedor>
         </Fondo>
     )
