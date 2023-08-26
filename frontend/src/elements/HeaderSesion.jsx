@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import colores from "../styles/colores";
-import PropTypes from 'prop-types';
 
 const Contenedor = styled.div`
     height: 60px;
@@ -30,10 +29,5 @@ const HeaderSesion = ({ inLogin, cambiarInLogin }) => {
         </Contenedor>
     )
 }
-
-HeaderSesion.propTypes = {
-    inLogin: PropTypes.bool,
-    cambiarInLogin: PropTypes.func
-};
 
 export default HeaderSesion
