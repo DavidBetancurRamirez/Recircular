@@ -15,7 +15,7 @@ const Contenedor = styled.div`
     background-color: ${colores.azulClaro};
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 20px;
     border-radius: 0 0 20px 20px;
 `;
 const Logo = styled.img`
@@ -23,7 +23,7 @@ const Logo = styled.img`
     margin: 10px auto;
 
     @media (max-width: 550px) {
-        width: 200px;
+        width: 150px;
     }
 `;
 const Formulario = styled.form`
