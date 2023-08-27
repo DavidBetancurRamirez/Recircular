@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserContextProvider } from './context/userContext';
 import { LoadingContextProvider } from './context/loadingContext';
+import { MessageContextProvider } from './context/messageContext';
 import Sesion from './components/Sesion';
 import App from './App';
 
@@ -14,17 +15,19 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
     {/* Contextos */}
     <LoadingContextProvider>
-      <UserContextProvider>
+      <MessageContextProvider>
+        <UserContextProvider>
 
-        {/* Ruteo */}
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<App />} />
-            <Route path='/sesion' element={<Sesion />} />
-          </Routes>
-        </BrowserRouter>
+          {/* Ruteo */}
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<App />} />
+              <Route path='/sesion' element={<Sesion />} />
+            </Routes>
+          </BrowserRouter>
 
-      </UserContextProvider>
+        </UserContextProvider>
+      </MessageContextProvider>
     </LoadingContextProvider>
 
   </React.StrictMode>

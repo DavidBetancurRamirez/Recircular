@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext"
+import { useMessage } from "../context/messageContext";
 
 import styled from "styled-components";
 import colores from "../styles/colores";
@@ -87,21 +88,24 @@ const ContentSesion = ({ inLogin }) => {
 
     // Contexto del usuario
     const { createUser } = useUser();
+
+    // Contexto de mensaje
+    const { newMessage } = useMessage();
     
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             if (inLogin) {
-                console.log("Falta")
+                newMessage(`Aun no esta el login`, "error")
             } else {
                 await createUser(username, email, password);
+                newMessage(`Bienvenido ${username}`, "exito")
                 navigate("/");
             }
         } catch (error) {
-            console.error("")
+            newMessage(`Ocurrio un error`, "error")
         }
     }
 

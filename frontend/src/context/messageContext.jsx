@@ -47,7 +47,7 @@ const ContenedorMensaje = styled.div`
         }};
         color: #fff;
         padding: 18px 30px;
-        border-radius: 0.31rem;
+        border-radius: 0.4rem;
         box-shadow: 0px 0px 15px rgba(0,0,0,.1);
         text-align: center;
         font-size: 14px;
@@ -80,7 +80,11 @@ export const MessageContextProvider = (props) => {
 
         if(message.visible){
             tiempo = setTimeout(() => {
-                message.visible = false
+                setMessage({
+                    mensaje: "", 
+                    tipo: null, 
+                    visible: false
+                })
             }, 4000)
         }
 
@@ -89,7 +93,8 @@ export const MessageContextProvider = (props) => {
 
     const newMessage = (mensaje, tipo) => {
         const tipos = ["exito", "error"]
-        if (tipos.includes(tipo) && mensaje instanceof String) {
+
+        if (tipos.includes(tipo) && typeof mensaje == "string") {
             setMessage({
                 mensaje, 
                 tipo, 
@@ -106,8 +111,12 @@ export const MessageContextProvider = (props) => {
                 newMessage
             }}
         >
+            {message.visible &&
+                <ContenedorMensaje tipo={message.tipo}>
+                    <p>{message.mensaje}</p>
+                </ContenedorMensaje>
+            }
             {props.children}
-            <ContenedorMensaje />
         </messageContext.Provider>
     )
 }
