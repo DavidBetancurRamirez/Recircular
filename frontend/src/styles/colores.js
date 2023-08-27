@@ -23,7 +23,9 @@ const colores = {
         seda: '#FFFAF0',
         tierra: '#8B4513',
         vidrio: '#2E8B57'
-    }
+    },
+    error: '#E34747',
+    exito: '#43A854'
 }
 
 export default colores
