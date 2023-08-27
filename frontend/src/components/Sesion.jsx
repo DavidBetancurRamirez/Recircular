@@ -32,7 +32,7 @@ const Sesion = () => {
         <Fondo>
             <Contenedor>
                 <HeaderSesion inLogin={inLogin} cambiarInLogin={cambiarInLogin} />
-                <ContentSesion inLogin={inLogin} cambiarInLogin={cambiarInLogin} />
+                <ContentSesion inLogin={inLogin} />
             </Contenedor>
         </Fondo>
     )
