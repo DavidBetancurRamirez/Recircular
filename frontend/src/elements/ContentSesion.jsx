@@ -1,10 +1,13 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/userContext"
+
 import styled from "styled-components";
 import colores from "../styles/colores";
-import PropTypes from 'prop-types';
-import Logo from "../images/logo2.png"
-import { FaUserCircle } from "react-icons/fa"
-import { RiLockPasswordFill } from "react-icons/ri"
-import { MdEmail } from "react-icons/md"
+import Logo from "../images/logo2.png";
+import { FaUserCircle } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { MdEmail } from "react-icons/md";
 
 const Contenedor = styled.div`
     background-color: ${colores.azulClaro};
@@ -58,32 +61,76 @@ const Boton = styled.button`
     color: #fff;
     font-weight: bold;
     font-size: 18px;
+    cursor: pointer;
 `
 
+
 const ContentSesion = ({ inLogin }) => {
+    const [username, cambiarUsername] = useState("");
+    const [email, cambiarEmail] = useState("");
+    const [password, cambiarPassword] = useState("");
+
+    const navigate = useNavigate();
+    const { createUser } = useUser();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            if (inLogin) {
+                console.log("Falta")
+            } else {
+                await createUser(username, email, password);
+                navigate("/");
+            }
+        } catch (error) {
+            console.error("")
+        }
+    }
+
     return (
         <Contenedor>
             <img src={Logo} alt="Logo Recircular" />
-            <Formulario>
+            <Formulario  onSubmit={handleSubmit}>
                 <ContInput>
-                    <Input placeholder="Username" /><FaUserCircle />
+                    <Input 
+                        required
+                        name = "username"
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => cambiarUsername(e.target.value)}
+                    />
+                    <FaUserCircle />
                 </ContInput>
                 {!inLogin &&
                     <ContInput>
-                        <Input placeholder="Email" /><MdEmail />
+                        <Input 
+                            required
+                            name = "email"
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => cambiarEmail(e.target.value)}
+                        />
+                        <MdEmail />
                     </ContInput>
                 }
                 <ContInput>
-                    <Input placeholder="Password" /><RiLockPasswordFill />
+                    <Input 
+                        required
+                        name = "password"
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => cambiarPassword(e.target.value)}
+                    />
+                    <RiLockPasswordFill />
                 </ContInput>
                 <Boton>{inLogin ? "Login" : "Sign in"}</Boton>
             </Formulario>
         </Contenedor>
     )
 }
-
-ContentSesion.propTypes = {
-    inLogin: PropTypes.bool
-};
 
 export default ContentSesion
