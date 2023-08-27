@@ -4,7 +4,8 @@ import { useUser } from "../context/userContext"
 
 import styled from "styled-components";
 import colores from "../styles/colores";
-import Logo from "../images/logo2.png";
+import LogoG from "../images/logo2.png";
+import LogoP from "../images/logo_blanco.png";
 import { FaUserCircle } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";
@@ -15,10 +16,13 @@ const Contenedor = styled.div`
     flex-direction: column;
     padding: 10px;
     border-radius: 0 0 20px 20px;
+`;
+const Logo = styled.img`
+    width: 300px;
+    margin: 10px auto;
 
-    img {
-        width: 300px;
-        margin: 10px auto;
+    @media (max-width: 550px) {
+        width: 200px;
     }
 `;
 const Formulario = styled.form`
@@ -38,6 +42,11 @@ const ContInput = styled.div`
         width: 30px;
         top: 5px;
         left: 5px;
+    }
+
+    @media (max-width: 550px) {
+        width: 100%;
+        height: 100%;
     }
 `
 const Input = styled.input`
@@ -62,6 +71,11 @@ const Boton = styled.button`
     font-weight: bold;
     font-size: 18px;
     cursor: pointer;
+
+    @media (max-width: 550px) {
+        width: 150px;
+        height: 40px;
+    }
 `
 
 
@@ -90,7 +104,7 @@ const ContentSesion = ({ inLogin }) => {
 
     return (
         <Contenedor>
-            <img src={Logo} alt="Logo Recircular" />
+            <Logo src={window.innerWidth>=550 ? LogoG : LogoP} alt="Logo Recircular" />
             <Formulario  onSubmit={handleSubmit}>
                 <ContInput>
                     <Input 

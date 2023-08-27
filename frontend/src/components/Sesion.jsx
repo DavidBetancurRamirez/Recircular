@@ -13,10 +13,15 @@ const Fondo = styled.div`
     width: 100vw;
     height: 100vh;
     padding: 80px;
+
+    @media (max-width: 700px) {
+        padding: 30px;
+    }
 `;
 const Contenedor = styled.div`
-    width: 1000px;
     margin: auto;
+    max-width: 1000px;
+    width: 100%;
 `;
 
 const Sesion = () => {

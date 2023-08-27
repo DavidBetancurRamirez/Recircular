@@ -4,12 +4,16 @@ import colores from "../styles/colores";
 const Contenedor = styled.div`
     height: 60px;
     display: flex;
+
+    @media (max-width: 700px) {
+        height: 40px;
+    }
 `;
 const Header = styled.button`
     background-color: ${props => (props.inLogin ? colores.azulClaro : colores.azulOscuro)};
     cursor: ${props => (props.inLogin ? "" : "pointer")};
-    width: 500px;
-    height: 60px;
+    width: 50%;
+    height: 100%;
     border: none;
     border-radius: 10px 10px 0 0;
     display: flex;
@@ -18,6 +22,10 @@ const Header = styled.button`
     font-size: 20px;
     font-weight: bold;
     color: #fff;
+
+    @media (max-width: 700px) {
+        font-size: 16px;
+    }
 `;
 
 
