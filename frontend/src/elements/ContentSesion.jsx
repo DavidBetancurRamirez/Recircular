@@ -80,12 +80,15 @@ const Boton = styled.button`
 
 
 const ContentSesion = ({ inLogin }) => {
+    // Estados con la informacion de los inputs
     const [username, cambiarUsername] = useState("");
     const [email, cambiarEmail] = useState("");
     const [password, cambiarPassword] = useState("");
 
-    const navigate = useNavigate();
+    // Contexto del usuario
     const { createUser } = useUser();
+    
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
