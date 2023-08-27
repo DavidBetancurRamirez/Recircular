@@ -12,9 +12,16 @@ Este Marketplace funcionaría como una plataforma en la que las empresas pueden 
 La plataforma permitiría a las empresas crear perfiles y publicar sus productos o materiales disponibles para la venta. Los compradores interesados podrían buscar y adquirir los productos que necesiten, fomentando así la reutilización y el intercambio de recursos entre empresas. Además, se podrían establecer negocios entre las empresas, lo que permitiría una mayor eficiencia en el uso de los recursos y la reducción de residuos. 
 La plataforma estaría diseñada para ser fácil de usar y accesible para las empresas de todos los tamaños. Se podrían incluir herramientas para la gestión de inventarios, la facturación y el seguimiento de las transacciones comerciales. Además, se podrían incluir herramientas de análisis de datos para ayudar a las empresas a tomar decisiones informadas sobre la gestión de sus residuos y saldos industriales.
 
-## Ejecucutarlo (Desarrollo)
-Subir frontend
+## Ejecucutar proyecto (Desarrollo)
+**Frontend**
 
     cd frontend
+
+> Descargar librerias:
+
+    npm i
+
+> Levantar entorno de desarrollo:
+
     npm run dev
     
