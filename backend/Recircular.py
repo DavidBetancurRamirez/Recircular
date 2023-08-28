@@ -15,7 +15,7 @@ class Recircular:
             # hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             conexion = Connection.database_connection()
             cursor = conexion.cursor(buffered=True)
-            sql = 'insert into user values(null,%s,%s,%s,null, null,%s);'
+            sql = 'insert into user values(null,%s,%s,%s,null, null,%s, null);'
             valores = (name, email, password, datetime.now())
             cursor.execute(sql, valores)
             conexion.commit()
@@ -51,8 +51,8 @@ class Recircular:
             '''name, email, password, phone, shipping_address'''
             conexion = Connection.database_connection()
             cursor = conexion.cursor(buffered=True)
-            sql = 'UPDATE user SET user.username = %s, user.email = %s, user.password = %s, user.phone = %s WHERE user.id = %s;'
-            valores = (name, email, password, phone, id)
+            sql = 'UPDATE user SET user.username = %s, user.email = %s, user.password = %s, user.phone = %s, user.date_updated = %s WHERE user.id = %s;'
+            valores = (name, email, password, phone, datetime.now(), id)
             cursor.execute(sql, valores)
             conexion.commit()
             conexion.close()
