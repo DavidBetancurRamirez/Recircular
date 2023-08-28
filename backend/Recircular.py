@@ -10,12 +10,13 @@ class Recircular:
     def sign_in(self, name, email, password):
         # self.__users_database.append(User(name, email, password, phone))
         try:
-            '''name, email, password, phone'''
-            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            '''name, email, password'''
+            # -> Failed to connect to database. 1406 (22001): Data too long for column 'password' at row 1
+            # hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             conexion = Connection.database_connection()
             cursor = conexion.cursor(buffered=True)
             sql = 'insert into user values(null,%s,%s,%s,null, null,%s);'
-            valores = (name, email, hashed_password, datetime.now())
+            valores = (name, email, password, datetime.now())
             cursor.execute(sql, valores)
             conexion.commit()
             conexion.close()
@@ -45,6 +46,20 @@ class Recircular:
             print("Failed to connect to database.", error)
             return None, False
     
+    def update_profile(self, name, email, password, phone, id):
+        try:
+            '''name, email, password, phone, shipping_address'''
+            conexion = Connection.database_connection()
+            cursor = conexion.cursor(buffered=True)
+            sql = 'UPDATE user SET user.username = %s, user.email = %s, user.password = %s, user.phone = %s WHERE user.id = %s;'
+            valores = (name, email, password, phone, id)
+            cursor.execute(sql, valores)
+            conexion.commit()
+            conexion.close()
+            
+        except mysql.connector.Error as error:
+            print("Failed to connect to database.", error)
+    
     # return user_id, boolean
     def login_encriptada(self, email, password):
         try:
@@ -73,7 +88,22 @@ class Recircular:
             print("Failed to connect to database.", error)
             return None, False
 
+############################################################################################################
+# Prácticas para ingresar a la base de datos
 
+prueba = Recircular()
+
+# prueba.sign_in('user_prueba1', 'prueba1@gmail.com', 'contrasena123')
+# prueba.sign_in('user_prueba1', 'prueba1@gmail.com', 'contrasena123')
+# prueba.sign_in('user_prueba2', 'prueba2@gmail.com', 'contrasena1234')
+# prueba.sign_in('Tomas', 'loperatomas410@gmail.com', 'AbCdEfGh-12345')
+
+id, booleano = prueba.login('loperatomas410@gmail.com', 'AbCdEfGh-12345')
+
+prueba.update_profile('Tomas', 'loperatomas410@gmail.com', 'AbCdEfGh-12345', '3046576354', id)
+
+print(id)
+print(booleano)
 
 
 
