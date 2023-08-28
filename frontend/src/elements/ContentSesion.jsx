@@ -15,7 +15,7 @@ const Contenedor = styled.div`
     background-color: ${colores.azulClaro};
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 20px;   
     border-radius: 0 0 20px 20px;
 `;
 const Logo = styled.img`
