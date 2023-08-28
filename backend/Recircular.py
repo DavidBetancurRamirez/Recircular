@@ -11,7 +11,7 @@ class Recircular:
         # self.__users_database.append(User(name, email, password, phone))
         try:
             '''name, email, password'''
-            # -> Failed to connect to database. 1406 (22001): Data too long for column 'password' at row 1
+            # -> Password Encriptada
             # hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             conexion = Connection.database_connection()
             cursor = conexion.cursor(buffered=True)
@@ -70,9 +70,10 @@ class Recircular:
             result = cursor.fetchone()
             
             if result:
+                # -> TypeError: Strings must be encoded before checking
                 hashed_password = result[0]
-                is_password_valid = bcrypt.checkpw(password.encode('utf-8'), hashed_password)
-                if is_password_valid:
+                user_password = password.encode('utf-8')
+                if bcrypt.checkpw(user_password, hashed_password):
                     # Obtener el ID del usuario si la contraseña es válida
                     cursor.execute("SELECT id FROM user WHERE email = %s", (email,))
                     user_id = cursor.fetchone()[0]
@@ -98,12 +99,18 @@ prueba = Recircular()
 # prueba.sign_in('user_prueba2', 'prueba2@gmail.com', 'contrasena1234')
 # prueba.sign_in('Tomas', 'loperatomas410@gmail.com', 'AbCdEfGh-12345')
 
-id, booleano = prueba.login('loperatomas410@gmail.com', 'AbCdEfGh-12345')
+# id, booleano = prueba.login('loperatomas410@gmail.com', 'AbCdEfGh-12345')
 
-prueba.update_profile('Tomas', 'loperatomas410@gmail.com', 'AbCdEfGh-12345', '3046576354', id)
+# prueba.update_profile('Tomas', 'loperatomas410@gmail.com', 'AbCdEfGh-12345', '3046576354', id)
 
-print(id)
-print(booleano)
+# prueba.sign_in('Prueba_Clase', 'pruebaclase@gmail.com', 'sistemaslomejor')
+
+# id, booleano = prueba.login('pruebaclase@gmail.com', 'sistemaslomejor')
+
+# prueba.update_profile('Prueba_Clase', 'pruebaclase@gmail.com', 'sistemaslomejor', '3107732543', id)
+
+# print(id)
+# print(booleano)
 
 
 
