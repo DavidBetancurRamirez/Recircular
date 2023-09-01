@@ -1,110 +1,89 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import styled from "styled-components";
 import colores from "../styles/colores";
-import Logo from "../images/logo2.png";
-import { GiShoppingCart } from "react-icons/gi"
-import { FaUserCircle } from "react-icons/fa";
-import { HiAdjustmentsHorizontal, HiMiniMagnifyingGlass } from "react-icons/hi2"
+import LogoB from "../images/logo_blanco.png";
+import Logo2 from "../images/logo2.png";
+import Logo3 from "../images/logo3.png";
+import UsuarioHeader from "../elements/UsuarioHeader";
+import BusquedaHeader from "../elements/BusquedaHeader";
+import Filtros from "../elements/Filtros";
 
 const Contenedor = styled.div`
     background-color: ${colores.azulClaro};
     height: 100px;
     width: 100vw;;
     border-radius: 0 0 15px 15px;
-    padding: 5px 40px;
+    padding: 5px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    img {
-        height: 90px;
-        width: 165px;
-        cursor: pointer;
+    @media (max-width: 1000px) {
+        padding: 5px 10px;
+    }
+
+    @media (max-width: 800px) {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
     }
 `
-const ContenedorBusqueda = styled.form`
+const Botones = styled.div`
+    height: 100%;
     display: flex;
-    height: 40px;
-`
-const Filtros = styled.div`
-    background-color: ${colores.azulOscuro};
-    color: #fff;
-    border-radius: 10px 0 0 10px;
-    padding: 10px;
-    display: flex;
-    cursor: pointer;
 
-    svg {
-        width: 22px;
-        height: 22px;
-        margin-left: 15px;
+    @media (max-width: 800px) {
+        height: 40px;
+        width: 100%;
+        justify-content: space-between;
     }
-`
-const Input = styled.input`
-    background-color: #fff;
-    opacity: .8;
-    border: 1px solid #fff;
-    outline: none;
-    padding: 10px;
-    width: 350px;
-    font-size: 14px;
-`
-const BtnBuscar = styled.button`
-    background-color: ${colores.verdeOscuro};
-    border: none;
-    border-radius: 0 10px 10px 0;
-    cursor: pointer;
 
-    svg {
-        width: 25px;
+    @media (max-width: 600px) {
         height: 25px;
-        margin: 0 10px;
     }
 `
-const ContenedorUsuario = styled.div`
-    display: flex;
-    align-items: center;
-
-    svg {
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-    }
-`
-const Usuario = styled.div`
-    display: flex;
-    align-items: center;
-    margin: 20px;
+const Logo = styled.img`
+    height: 100%;
     cursor: pointer;
-
-    svg {
-        width: 30px;
-        height: 30px;
-        margin: 0 5px;
-    }
 `
 
 
 const Header = () => {
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    const navigate = useNavigate();
+
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+    };
+    const cambiarLogo = () => {
+        if (windowWidth>=1000) return Logo2
+        else if (windowWidth>800) return LogoB
+        else return Logo3
+    }
+
+    useEffect(() => {
+        // Agregar el evento de cambio de tamaño de ventana
+        window.addEventListener('resize', handleResize);
+
+        // Limpieza del efecto al desmontar el componente
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    
     return (
         <Contenedor>
-            <img src={Logo} alt="Logo recircular"  />
-            <ContenedorBusqueda>
-                <Filtros>
-                    Filtros
-                    <HiAdjustmentsHorizontal />
-                </Filtros>
-                <Input />
-                <BtnBuscar>
-                    <HiMiniMagnifyingGlass />
-                </BtnBuscar>
-            </ContenedorBusqueda>
-            <ContenedorUsuario>
-                <Usuario>
-                    Anonimus
-                    <FaUserCircle />
-                </Usuario>
-                <GiShoppingCart />
-            </ContenedorUsuario>
+            <Botones>
+                <Logo src={cambiarLogo()} alt="Logo recircular" onClick={() => navigate("/")}  />
+                {window.innerWidth<=800 && <UsuarioHeader /> }
+            </Botones>
+            <BusquedaHeader />
+            {window.innerWidth>800 && <UsuarioHeader /> }
+            {window.innerWidth<=800 && <Filtros /> }
         </Contenedor>
     )
 }
