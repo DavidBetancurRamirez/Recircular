@@ -1,9 +1,10 @@
-import Logo from './images/logo1.png';
+import Header from './components/Header';
+
 
 const App = () => {
 
   return (
-    <img src={Logo} alt="Recircular" width="800px" height="450px" />
+    <Header />
   )
 }
 
