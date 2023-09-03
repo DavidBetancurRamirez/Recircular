@@ -6,15 +6,14 @@ import colores from "../styles/colores";
 import LogoB from "../images/logo_blanco.png";
 import Logo2 from "../images/logo2.png";
 import Logo3 from "../images/logo3.png";
-import UsuarioHeader from "../elements/UsuarioHeader";
-import BusquedaHeader from "../elements/BusquedaHeader";
-import Filtros from "../elements/Filtros";
+import UsuarioHeader from "./UsuarioHeader";
+import BusquedaHeader from "./BusquedaHeader";
+import Filtros from "./Filtros";
 
 const Contenedor = styled.div`
     background-color: ${colores.azulClaro};
     height: 100px;
     width: 100vw;;
-    border-radius: 0 0 15px 15px;
     padding: 5px 30px;
     display: flex;
     align-items: center;
