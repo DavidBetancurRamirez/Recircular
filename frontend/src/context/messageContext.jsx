@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react"
 import styled, {keyframes} from 'styled-components';
 import colores from '../styles/colores';
 
+
 const slideDown = keyframes`
     0% {
         transform: translateY(-1.25rem); /* 20px */
@@ -23,28 +24,18 @@ const slideDown = keyframes`
         opacity: 0;
     }
 `;
-const ContenedorMensaje = styled.div`
+const ContenedorMensaje = styled.article`
     z-index: 1000;
-    width: 100%;
-    left: 0;
-    top: 10px;
+    width: 100vw;
     position: fixed;
+    top: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     animation: ${slideDown} 4s ease forwards;
  
     p {
- 
-        background: ${(props) => {
-            if(props.tipo === 'error'){
-                return colores.error;
-            } else if (props.tipo === 'exito') {
-                return colores.exito;
-            } else {
-                return '#000';
-            }
-        }};
+        background-color: ${(props) => tiposMensajes[props.$tipo] || '#000'};
         color: #fff;
         padding: 18px 30px;
         border-radius: 0.4rem;
@@ -60,9 +51,13 @@ const ContenedorMensaje = styled.div`
 
 
 const messageContext = createContext();
+const tiposMensajes = {
+    error: colores.error,
+    exito: colores.exito,
+};
+
 
 export const useMessage = () => {
-    // Para usar el contexto de usuario como un hook
     const context = useContext(messageContext)
     if(!context) throw new Error("No hay un provider")
     return context
@@ -85,16 +80,14 @@ export const MessageContextProvider = (props) => {
                     tipo: null, 
                     visible: false
                 })
-            }, 4000)
+            }, 3000)
         }
 
         return(() => clearTimeout(tiempo))
     }, [message])
 
     const newMessage = (mensaje, tipo) => {
-        const tipos = ["exito", "error"]
-
-        if (tipos.includes(tipo) && typeof mensaje == "string") {
+        if (tipo in tiposMensajes) {
             setMessage({
                 mensaje, 
                 tipo, 
@@ -112,7 +105,7 @@ export const MessageContextProvider = (props) => {
             }}
         >
             {message.visible &&
-                <ContenedorMensaje tipo={message.tipo}>
+                <ContenedorMensaje $tipo={message.tipo}>
                     <p>{message.mensaje}</p>
                 </ContenedorMensaje>
             }

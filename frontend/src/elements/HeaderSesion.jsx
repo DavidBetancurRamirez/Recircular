@@ -10,8 +10,8 @@ const Contenedor = styled.div`
     }
 `;
 const Header = styled.button`
-    background-color: ${props => (props.inLogin ? colores.azulClaro : colores.azulOscuro)};
-    cursor: ${props => (props.inLogin ? "" : "pointer")};
+    background-color: ${props => (props.$inLogin ? colores.azulClaro : colores.azulOscuro)};
+    cursor: ${props => (props.$inLogin ? "auto" : "pointer")};
     width: 50%;
     height: 100%;
     border: none;
@@ -32,8 +32,8 @@ const Header = styled.button`
 const HeaderSesion = ({ inLogin, cambiarInLogin }) => {
     return (
         <Contenedor>
-            <Header inLogin={inLogin} onClick={() => cambiarInLogin(true)}>Login</Header>
-            <Header inLogin={!inLogin} onClick={() => cambiarInLogin(false)}>Sign in</Header>
+            <Header $inLogin={inLogin} onClick={() => cambiarInLogin(true)}>Login</Header>
+            <Header $inLogin={!inLogin} onClick={() => cambiarInLogin(false)}>Sign in</Header>
         </Contenedor>
     )
 }
