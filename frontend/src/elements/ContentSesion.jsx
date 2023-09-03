@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext"
 import { useMessage } from "../context/messageContext";
@@ -81,6 +81,9 @@ const Boton = styled.button`
 
 
 const ContentSesion = ({ inLogin }) => {
+    // Tamaño de la pantalla
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
     // Estados con la informacion de los inputs
     const [username, cambiarUsername] = useState("");
     const [email, cambiarEmail] = useState("");
@@ -93,6 +96,19 @@ const ContentSesion = ({ inLogin }) => {
     const { newMessage } = useMessage();
     
     const navigate = useNavigate();
+
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+    };
+    useEffect(() => {
+        // Agregar el evento de cambio de tamaño de ventana
+        window.addEventListener('resize', handleResize);
+
+        // Limpieza del efecto al desmontar el componente
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -111,7 +127,7 @@ const ContentSesion = ({ inLogin }) => {
 
     return (
         <Contenedor>
-            <Logo src={window.innerWidth>=550 ? LogoG : LogoP} alt="Logo Recircular" />
+            <Logo src={windowWidth>=550 ? LogoG : LogoP} alt="Logo Recircular" />
             <Formulario  onSubmit={handleSubmit}>
                 <ContInput>
                     <Input 
