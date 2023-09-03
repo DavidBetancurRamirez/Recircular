@@ -90,7 +90,7 @@ const ContentSesion = ({ inLogin }) => {
     const [password, cambiarPassword] = useState("");
 
     // Contexto del usuario
-    const { createUser } = useUser();
+    const { createUser, login } = useUser();
 
     // Contexto de mensaje
     const { newMessage } = useMessage();
@@ -112,16 +112,33 @@ const ContentSesion = ({ inLogin }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        let respuesta;
+
         try {
             if (inLogin) {
-                newMessage(`Aun no esta el login`, "error")
+                // ** Pestaña de login ** //
+                
+                respuesta = await login({ username, password });
             } else {
-                await createUser(username, email, password);
-                newMessage(`Bienvenido ${username}`, "exito")
+                // ** Pestaña de sign in ** //
+
+                // Crear usuario
+                respuesta = await createUser({
+                    username,
+                    email,
+                    password
+                });
+            }
+
+            if (respuesta instanceof String) {
+                // En caso de devolver un string es que hubo un error
+                newMessage(respuesta, "error")
+            } else {
+                newMessage(`Bienvenido ${username}`, "exito");
                 navigate("/");
             }
         } catch (error) {
-            newMessage(`Ocurrio un error`, "error")
+            newMessage("Intentelo más tarde", "error");
         }
     }
 
