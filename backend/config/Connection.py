@@ -4,7 +4,7 @@ class Connection:
     
     def database_connection():
         try:
-            conexion = mysql.connector.connect(user='root', password='Tomaslopera801',
+            conexion = mysql.connector.connect(user='root', password='Password',
                                    host='localhost', database='recircular', # localhost = 127.0.0.1
                                    port='3306')
             return conexion
