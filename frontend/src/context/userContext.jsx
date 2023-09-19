@@ -1,5 +1,6 @@
-import { createContext, useContext, useState } from "react"
 import axios from "axios"
+
+import { createContext, useContext, useState } from "react"
 import { validarEmail, validarPassword } from "../functions/Formularios";
 
 
@@ -34,9 +35,9 @@ export const UserContextProvider = (props) => {
             await axios.post("/usuarios", usuario);
             
             setUser(usuario);
-            return true;
+            return usuario;
         } catch (error) {
-            return "Intentelo más tarde";         
+            throw new Error("Intentelo más tarde");         
         }
     }
     
@@ -48,7 +49,8 @@ export const UserContextProvider = (props) => {
     
             // Inactivar usuario
             usuario.activo = false;
-            return editUser(usuario);
+            await editUser(usuario);
+            return true;
         } catch (error) {
             return false;
         }
@@ -60,26 +62,34 @@ export const UserContextProvider = (props) => {
 
     const getUser = async (buscar) => {
         try {
+            const options = {
+                method: 'GET',
+                url: `/usuarios/${buscar}`,
+                headers: {}
+            };
             // Se puede obtener por id o por username
-            const response = await axios.get("/usuarios/"+buscar);
-            return response;
+            const response = await axios.get(options);
+            return response.data;
         } catch (error) {
-            return false;
+            return null;
         }
     }
     
     const login = async ({ username, password }) => {
+        const mensaje = "Username o password no validos";
+
         // Obtener usuario
         const usuario = await getUser(username);
+        if (!usuario) throw new Error(mensaje)
 
         // Validar password
         const iguales = usuario.getPassword===password;
 
         // En caso de no coincidir devolver mensaje
-        if (!usuario || !iguales) return "Username o password no validos";
+        if (!usuario || !iguales) throw new Error(mensaje)
 
         setUser(usuario);
-        return true;
+        return usuario;
     }
 
     return (
