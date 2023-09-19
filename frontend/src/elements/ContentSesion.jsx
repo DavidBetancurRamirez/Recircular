@@ -120,7 +120,7 @@ const ContentSesion = ({ inLogin }) => {
                 
                 respuesta = await login({ username, password });
             } else {
-                // ** Pestaña de sign in ** //
+                // ** Pestaña de sign Up ** //
 
                 // Crear usuario
                 respuesta = await createUser({
@@ -181,7 +181,7 @@ const ContentSesion = ({ inLogin }) => {
                     />
                     <RiLockPasswordFill />
                 </ContInput>
-                <Boton>{inLogin ? "Login" : "Sign in"}</Boton>
+                <Boton>{inLogin ? "Login" : "Sign Up"}</Boton>
             </Formulario>
         </Contenedor>
     )
