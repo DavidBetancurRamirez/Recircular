@@ -33,7 +33,7 @@ const HeaderSesion = ({ inLogin, cambiarInLogin }) => {
     return (
         <Contenedor>
             <Header $inLogin={inLogin} onClick={() => cambiarInLogin(true)}>Login</Header>
-            <Header $inLogin={!inLogin} onClick={() => cambiarInLogin(false)}>Sign in</Header>
+            <Header $inLogin={!inLogin} onClick={() => cambiarInLogin(false)}>Sign Up</Header>
         </Contenedor>
     )
 }

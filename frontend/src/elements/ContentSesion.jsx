@@ -164,7 +164,7 @@ const ContentSesion = ({ inLogin }) => {
                     />
                     <RiLockPasswordFill />
                 </ContInput>
-                <Boton>{inLogin ? "Login" : "Sign in"}</Boton>
+                <Boton>{inLogin ? "Login" : "Sign Up"}</Boton>
             </Formulario>
         </Contenedor>
     )
