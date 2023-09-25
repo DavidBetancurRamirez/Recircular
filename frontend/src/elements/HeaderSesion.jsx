@@ -38,4 +38,4 @@ const HeaderSesion = ({ inLogin, cambiarInLogin }) => {
     )
 }
 
-export default HeaderSesion
+export default HeaderSesion;
