@@ -9,7 +9,7 @@ import Logo3 from "../images/logo3.png";
 import UsuarioHeader from "./UsuarioHeader";
 import BusquedaHeader from "./BusquedaHeader";
 import Filtros from "./Filtros";
-import { Volver } from "../styles/varios";
+import Volver from "./Volver";
 
 const Contenedor = styled.div`
     background-color: ${colores.azulClaro};
