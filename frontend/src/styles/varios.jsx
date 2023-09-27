@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import colores from "./colores";
 
-import { WiDirectionLeft } from "react-icons/wi"
 
 export const ContenedorPrincipal = styled.div`
     display: flex;
@@ -16,7 +15,6 @@ export const ContenedorSombra = styled.div`
     flex-direction: column;
     width: 100%;
     border-radius: 20px;
-    z-index: -1;
     margin: 20px 0;
     padding: 10px 20px;
     background: linear-gradient(315deg, #ffffff, ${colores.gris});
@@ -31,52 +29,15 @@ export const ContenedorSombra = styled.div`
     }
 `
 
-const ContenedorVolver = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 90px;
-    height: 30px;
-    border: none;
-    border-radius: 20px;
-    padding: 5px;
-    background-color: ${colores.azulOscuro};
-    cursor: pointer;
-
-    p {
-        color: #fff;
-        margin-right: 5px;
-        font-weight: lighter;
-        font-size: 15px;
-    }
-`
-const Flecha = styled.div`
-    width: 20px;
-    height: 20px;
-    background-color: ${colores.verdeClaro};
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    svg {
-        width: 80%;
-        height: 80%;
-        color: ${colores.azulOscuro};
-    }
-`
-export const Volver = () => {
-    return (
-        <ContenedorVolver>
-            <Flecha><WiDirectionLeft /></Flecha>
-            <p>Volver</p>
-        </ContenedorVolver>
-    )
-}
-
 export const Formulario = styled.form`
     display: flex;
     flex-direction: column;
+
+    h3 {
+        font-weight: 700;
+        font-size: 15px;
+        margin-right: 10px;
+    }
 `
 
 export const Input = styled.input`
@@ -90,3 +51,17 @@ export const Input = styled.input`
     height: 100%;
     font-size: 14px;
 `
+
+export const InputFlexible = styled.textarea`
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    outline: none;
+    background-color: #fff;
+    opacity: .8;
+    border-radius: 10px;
+    border: 1px solid #fff;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 5px;
+`;
