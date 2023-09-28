@@ -19,7 +19,7 @@
 #             valores = (name, email, password, datetime.now())
 #             cursor.execute(sql, valores)
 #             conexion.commit()
-#             conexion.close()
+            # conexion.close()
             
 #         except mysql.connector.Error as error:
 #             print("Failed to connect to database.", error)
