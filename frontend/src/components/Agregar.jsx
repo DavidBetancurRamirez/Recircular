@@ -7,6 +7,7 @@ import Imagenes from "../elements/Imagenes";
 import styled from "styled-components";
 import colores from "../styles/colores";
 import { ContenedorPrincipal, ContenedorSombra, Formulario, Input, InputFlexible, Mitad } from "../styles/varios";
+import Caracteristicas from "../elements/Caracteristicas";
 
 const ContenedorInput = styled.div`
     display: flex;
@@ -18,7 +19,7 @@ const ContenedorInput = styled.div`
 const Boton = styled.button`
     width: 150px;
     height: 30px;
-    margin: 30px auto;
+    margin: 25px auto;
     border: none;
     border-radius: 20px;
     color: #fff;
@@ -37,7 +38,7 @@ const Agregar = () => {
     const [materiales, cambiarMateriales] = useState([])
     const [imagenes, cambiarImagenes] = useState([])
     const [descripcion, cambiarDescripcion] = useState("");
-    const [caracteristicas, cambiarCaracteristicas] = useState("");
+    const [caracteristicas, cambiarCaracteristicas] = useState([""]);
 
 
     return (
@@ -58,10 +59,12 @@ const Agregar = () => {
                                 onChange={(e) => cambiarNombre(e.target.value)}
                             />
                         </ContenedorInput>
+
                         <Mitad>
                             <SelecMateriales materiales={materiales} cambiarMateriales={cambiarMateriales} />
                             <Imagenes imagenes={imagenes} cambiarImagenes={cambiarImagenes} />
                         </Mitad>
+
                         <div>
                             <h3>Descipción</h3>
                             <InputFlexible 
@@ -73,17 +76,9 @@ const Agregar = () => {
                                 onChange={(e) => cambiarDescripcion(e.target.value)}
                             />
                         </div>
-                        <div>
-                            <h3>Caracteristicas</h3>
-                            <InputFlexible 
-                                required 
-                                name = "caracteristicas"
-                                type="text"
-                                placeholder="Separar las caracteristicas por punto (.)"
-                                value={caracteristicas}
-                                onChange={(e) => cambiarCaracteristicas(e.target.value)}
-                            />
-                        </div>
+
+                        <Caracteristicas caracteristicas={caracteristicas} cambiarCaracteristicas={cambiarCaracteristicas} />
+
                         <Boton>Agregar</Boton>
                     </Formulario>
                 </ContenedorSombra>
