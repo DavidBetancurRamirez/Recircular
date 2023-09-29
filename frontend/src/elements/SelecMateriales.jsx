@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Material from './Material';
+import { ContenedorScroll } from '../styles/varios';
 
 import styled from 'styled-components';
 import colores from '../styles/colores';
-import { AiFillCaretDown } from "react-icons/ai"
+import { AiFillCaretDown } from "react-icons/ai";
 
 const ContenedorSelect = styled.div`
     cursor: pointer;
@@ -61,16 +62,6 @@ const Opcion = styled.div`
         border-radius: 50%;
     }
 `;
-const ContenedorScroll = styled.div`
-    display: flex;
-    width: 90%;
-    white-space: nowrap;
-    overflow-x: auto;
-
-    > div { margin-top: 10px; }
-
-    @media (max-width: 800px) { width: 100%; }
-`
 
 
 const SelecMateriales = ({ materiales, cambiarMateriales }) => {
@@ -122,7 +113,7 @@ const SelecMateriales = ({ materiales, cambiarMateriales }) => {
                 {materiales.map((material, index) => {
                     return (
                         <div key={index}>
-                            <Material key={index} material={material} />
+                            <Material material={material} />
                         </div>
                     )
                 })}

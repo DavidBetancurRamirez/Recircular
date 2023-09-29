@@ -65,3 +65,26 @@ export const InputFlexible = styled.textarea`
     font-size: 14px;
     margin-top: 5px;
 `;
+
+export const ContenedorScroll = styled.article`
+    display: flex;
+    width: 90%;
+    white-space: nowrap;
+    overflow-x: auto;
+
+    > div { margin-top: 10px; }
+
+    @media (max-width: 800px) { width: 100%; }
+`
+
+export const Mitad = styled.div`
+    display: flex;
+    margin-bottom: 20px;
+
+    > div { width: 50%; }
+
+    @media (max-width: 800px) {
+        flex-direction: column;
+        > div { width: 100% }
+    }
+`

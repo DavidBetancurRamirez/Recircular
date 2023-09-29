@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "./Layout";
 import Volver from "../elements/Volver";
 import SelecMateriales from "../elements/SelecMateriales";
+import Imagenes from "../elements/Imagenes";
 
 import styled from "styled-components";
 import colores from "../styles/colores";
-import { ContenedorPrincipal, ContenedorSombra, Formulario, Input, InputFlexible } from "../styles/varios";
+import { ContenedorPrincipal, ContenedorSombra, Formulario, Input, InputFlexible, Mitad } from "../styles/varios";
 
 const ContenedorInput = styled.div`
     display: flex;
@@ -13,17 +14,6 @@ const ContenedorInput = styled.div`
     width: 100%;
     height: 30px;
     margin-bottom: 20px;
-`
-const Dividido = styled.div`
-    display: flex;
-    margin-bottom: 20px;
-
-    > div { width: 50%; }
-
-    @media (max-width: 800px) {
-        flex-direction: column;
-        > div { width: 100%}
-    }
 `
 const Boton = styled.button`
     width: 150px;
@@ -36,12 +26,30 @@ const Boton = styled.button`
     font-size: 14px;
     font-weight: normal;
     cursor: pointer;
+    transition: 0.5s all ease;
+
+    &:hover { color: ${colores.azulClaro}; }
 `
 
 
 const Agregar = () => {
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+    };
+    useEffect(() => {
+        // Agregar el evento de cambio de tamaño de ventana
+        window.addEventListener('resize', handleResize);
+
+        // Limpieza del efecto al desmontar el componente
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     const [nombre, cambiarNombre] = useState("");
     const [materiales, cambiarMateriales] = useState([])
+    const [imagenes, cambiarImagenes] = useState([])
     const [descripcion, cambiarDescripcion] = useState("");
     const [caracteristicas, cambiarCaracteristicas] = useState("");
 
@@ -49,7 +57,7 @@ const Agregar = () => {
     return (
         <Layout>
             <ContenedorPrincipal>
-                {window.innerWidth>800 && <Volver /> }
+                {windowWidth>800 && <Volver /> }
                 <ContenedorSombra>
                     <h2>Agregar Producto</h2>
                     <Formulario>
@@ -64,12 +72,10 @@ const Agregar = () => {
                                 onChange={(e) => cambiarNombre(e.target.value)}
                             />
                         </ContenedorInput>
-                        <Dividido>
+                        <Mitad>
                             <SelecMateriales materiales={materiales} cambiarMateriales={cambiarMateriales} />
-                            <ContenedorInput>
-                                <h3>Imagenes</h3>
-                            </ContenedorInput>
-                        </Dividido>
+                            <Imagenes imagenes={imagenes} cambiarImagenes={cambiarImagenes} />
+                        </Mitad>
                         <div>
                             <h3>Descipción</h3>
                             <InputFlexible 
