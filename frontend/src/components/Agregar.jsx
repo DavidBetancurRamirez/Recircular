@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Layout from "./Layout";
-import Volver from "../elements/Volver";
+import BtnVolver from "../elements/BtnVolver";
 import SelecMateriales from "../elements/SelecMateriales";
 import Imagenes from "../elements/Imagenes";
 
@@ -33,20 +33,6 @@ const Boton = styled.button`
 
 
 const Agregar = () => {
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    const handleResize = () => {
-        setWindowWidth(window.innerWidth);
-    };
-    useEffect(() => {
-        // Agregar el evento de cambio de tamaño de ventana
-        window.addEventListener('resize', handleResize);
-
-        // Limpieza del efecto al desmontar el componente
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
     const [nombre, cambiarNombre] = useState("");
     const [materiales, cambiarMateriales] = useState([])
     const [imagenes, cambiarImagenes] = useState([])
@@ -57,7 +43,7 @@ const Agregar = () => {
     return (
         <Layout>
             <ContenedorPrincipal>
-                {windowWidth>800 && <Volver /> }
+                <BtnVolver />
                 <ContenedorSombra>
                     <h2>Agregar Producto</h2>
                     <Formulario>
