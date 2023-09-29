@@ -5,13 +5,13 @@ import colores from "../styles/colores"
 import { AiOutlineCloseSquare } from "react-icons/ai"
 
 const Contenedor = styled.div`
-    margin-top: 20px;
-
     > div {
         display: flex;
         align-items: center;
         font-size: 12px;
     }
+
+    @media (max-width: 800px) { margin-top: 20px; }
 `
 const ContenedorImagen = styled.div`
     display: flex;
@@ -33,6 +33,7 @@ const ContenedorImagen = styled.div`
     svg {
         width: 15px;
         height: 15px;
+        cursor: pointer;
     }
 `
 const AgregarImg = styled.label`
@@ -46,6 +47,9 @@ const AgregarImg = styled.label`
     transition: 0.5s all ease;
     white-space: nowrap;
     margin-right: 10px;
+    transition: 0.5s all ease;
+
+    &:hover { color: ${colores.azulClaro} }
 `
 
 const Imagenes = ({ imagenes, cambiarImagenes }) => {
