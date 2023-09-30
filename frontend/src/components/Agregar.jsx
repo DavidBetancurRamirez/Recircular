@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Layout from "./Layout";
-import BtnVolver from "../elements/BtnVolver";
 import SelecMateriales from "../elements/SelecMateriales";
 import Imagenes from "../elements/Imagenes";
 
@@ -44,7 +43,6 @@ const Agregar = () => {
     return (
         <Layout>
             <ContenedorPrincipal>
-                <BtnVolver />
                 <ContenedorSombra>
                     <h2>Agregar Producto</h2>
                     <Formulario>
