@@ -140,7 +140,7 @@ const ContentSesion = ({ inLogin }) => {
                         required
                         name = "username"
                         type="text"
-                        placeholder="Username"
+                        placeholder="Nombre Usuario"
                         value={username}
                         onChange={(e) => cambiarUsername(e.target.value)}
                     />
@@ -152,7 +152,7 @@ const ContentSesion = ({ inLogin }) => {
                             required
                             name = "email"
                             type="email"
-                            placeholder="Email"
+                            placeholder="Correo Electronico"
                             value={email}
                             onChange={(e) => cambiarEmail(e.target.value)}
                         />
@@ -164,13 +164,13 @@ const ContentSesion = ({ inLogin }) => {
                         required
                         name = "password"
                         type="password"
-                        placeholder="Password"
+                        placeholder="Contraseña"
                         value={password}
                         onChange={(e) => cambiarPassword(e.target.value)}
                     />
                     <RiLockPasswordFill />
                 </ContInput>
-                <Boton>{inLogin ? "Login" : "Sign Up"}</Boton>
+                <Boton>{inLogin ? "Iniciar Sesión" : "Registrarse"}</Boton>
             </Formulario>
         </Contenedor>
     )

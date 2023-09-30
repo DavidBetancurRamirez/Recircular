@@ -58,8 +58,8 @@ const Sesion = () => {
         <Fondo>
             <Contenedor>
                 <ContenedorHeader>
-                    <Header $inLogin={inLogin} onClick={() => cambiarInLogin(true)}>Login</Header>
-                    <Header $inLogin={!inLogin} onClick={() => cambiarInLogin(false)}>Sign Up</Header>
+                    <Header $inLogin={inLogin} onClick={() => cambiarInLogin(true)}>Iniciar Sesión</Header>
+                    <Header $inLogin={!inLogin} onClick={() => cambiarInLogin(false)}>Registrarse</Header>
                 </ContenedorHeader>
                 <ContentSesion inLogin={inLogin} />
             </Contenedor>
