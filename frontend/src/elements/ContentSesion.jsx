@@ -5,6 +5,7 @@ import { useMessage } from "../context/messageContext";
 
 import styled from "styled-components";
 import colores from "../styles/colores";
+import { Formulario, Input } from "../styles/varios";
 import LogoG from "../images/logo2.png";
 import LogoP from "../images/logo_blanco.png";
 import { FaUserCircle } from "react-icons/fa";
@@ -17,6 +18,8 @@ const Contenedor = styled.div`
     flex-direction: column;
     padding: 20px;
     border-radius: 0 0 20px 20px;
+
+    > form { align-items: center; }
 `;
 const Logo = styled.img`
     width: 300px;
@@ -26,16 +29,13 @@ const Logo = styled.img`
         width: 150px;
     }
 `;
-const Formulario = styled.form`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`
 const ContInput = styled.div`
     width: 400px;
     height: 40px;
     margin: 10px;
     position: relative;
+
+    input { padding-left: 40px; }
 
     svg {
         position: absolute;
@@ -49,17 +49,6 @@ const ContInput = styled.div`
         width: 100%;
         height: 100%;
     }
-`
-const Input = styled.input`
-    background-color: #fff;
-    opacity: .8;
-    border-radius: 10px;
-    border: 1px solid #fff;
-    outline: none;
-    padding: 10px 10px 10px 40px;
-    width: 100%;
-    height: 100%;
-    font-size: 14px;
 `
 const Boton = styled.button`
     border: none;;
@@ -90,7 +79,7 @@ const ContentSesion = ({ inLogin }) => {
     const [password, cambiarPassword] = useState("");
 
     // Contexto del usuario
-    const { createUser } = useUser();
+    const { createUser, login } = useUser();
 
     // Contexto de mensaje
     const { newMessage } = useMessage();
@@ -112,16 +101,33 @@ const ContentSesion = ({ inLogin }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        let respuesta;
+
         try {
             if (inLogin) {
-                newMessage(`Aun no esta el login`, "error")
+                // ** Pestaña de login ** //
+                
+                respuesta = await login({ username, password });
             } else {
-                await createUser(username, email, password);
-                newMessage(`Bienvenido ${username}`, "exito")
+                // ** Pestaña de sign Up ** //
+
+                // Crear usuario
+                respuesta = await createUser({
+                    username,
+                    email,
+                    password
+                });
+            }
+
+            if (respuesta instanceof String) {
+                // En caso de devolver un string es que hubo un error
+                newMessage(respuesta, "error")
+            } else {
+                newMessage(`Bienvenido ${username}`, "exito");
                 navigate("/");
             }
         } catch (error) {
-            newMessage(`Ocurrio un error`, "error")
+            newMessage("Intentelo más tarde", "error");
         }
     }
 

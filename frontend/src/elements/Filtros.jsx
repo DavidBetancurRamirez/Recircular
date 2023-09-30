@@ -12,6 +12,11 @@ const ContenedorFiltros = styled.div`
     justify-content: space-between;
     cursor: pointer;
 
+    p {
+        font-size: 15px;
+        font-weight: lighter;
+    }
+
     svg {
         width: 22px;
         height: 22px;

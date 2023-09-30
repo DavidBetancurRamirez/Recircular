@@ -9,6 +9,7 @@ import Logo3 from "../images/logo3.png";
 import UsuarioHeader from "./UsuarioHeader";
 import BusquedaHeader from "./BusquedaHeader";
 import Filtros from "./Filtros";
+import Volver from "./Volver";
 
 const Contenedor = styled.div`
     background-color: ${colores.azulClaro};
@@ -47,6 +48,13 @@ const Logo = styled.img`
     height: 100%;
     cursor: pointer;
 `
+const Contenedor2 = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 350px;
+`
 
 
 const Header = () => {
@@ -78,11 +86,16 @@ const Header = () => {
         <Contenedor>
             <Botones>
                 <Logo src={cambiarLogo()} alt="Logo recircular" onClick={() => navigate("/")}  />
-                {window.innerWidth<=800 && <UsuarioHeader /> }
+                {windowWidth<=800 && <UsuarioHeader /> }
             </Botones>
             <BusquedaHeader />
-            {window.innerWidth>800 && <UsuarioHeader /> }
-            {window.innerWidth<=800 && <Filtros /> }
+            {windowWidth>800 && <UsuarioHeader /> }
+            {windowWidth<=800 && 
+                <Contenedor2>
+                    <Volver />
+                    <Filtros />
+                </Contenedor2>
+            }
         </Contenedor>
     )
 }
