@@ -9,7 +9,6 @@ import Logo3 from "../images/logo3.png";
 import UsuarioHeader from "./UsuarioHeader";
 import BusquedaHeader from "./BusquedaHeader";
 import Filtros from "./Filtros";
-import Volver from "./Volver";
 
 const Contenedor = styled.div`
     background-color: ${colores.azulClaro};
@@ -89,12 +88,10 @@ const Header = () => {
                 {windowWidth<=800 && <UsuarioHeader /> }
             </Botones>
             <BusquedaHeader />
-            {windowWidth>800 && <UsuarioHeader /> }
-            {windowWidth<=800 && 
-                <Contenedor2>
-                    <Volver />
-                    <Filtros />
-                </Contenedor2>
+            {windowWidth>800 ?
+                <UsuarioHeader />
+            : 
+                <Filtros /> 
             }
         </Contenedor>
     )
