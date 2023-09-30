@@ -127,6 +127,7 @@ const ContentSesion = ({ inLogin }) => {
                 navigate("/");
             }
         } catch (error) {
+            console.log(error);
             newMessage("Intentelo más tarde", "error");
         }
     }
