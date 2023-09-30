@@ -12,7 +12,7 @@ const ContenedorUsuario = styled.div`
         cursor: pointer;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 800px) {
         svg {
             width: 25px;
             height: 25px;
