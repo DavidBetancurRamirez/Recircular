@@ -13,8 +13,13 @@ class User(BaseModel):
     date_updated: Optional[datetime] = None
     
 
-class LogIn(BaseModel):
-    username: str
-    password: str
+class ShippingAddress(BaseModel):
+    id: Optional[int] = None
+    country: str
+    city: str
+    province: str
+    address: str
+    description: Optional[str] = None
+    postal_code: Optional[str] = None
 
 

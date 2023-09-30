@@ -52,10 +52,10 @@ users = Table("user", meta,
 
 shipping_address = Table("shipping_address", meta, 
                          Column('id', Integer, primary_key=True, autoincrement=True), 
-                         Column('country', String(45)), 
-                         Column('city', String(45)), 
-                         Column('province', String(45)), 
-                         Column('address', String(45)), 
+                         Column('country', String(45), nullable=False), 
+                         Column('city', String(45), nullable=False), 
+                         Column('province', String(45), nullable=False), 
+                         Column('address', String(45), nullable=False), 
                          Column('description', String(45)), 
                          Column('postal_code', Integer)
                          )
