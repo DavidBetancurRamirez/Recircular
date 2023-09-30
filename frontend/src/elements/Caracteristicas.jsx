@@ -10,17 +10,17 @@ const ContenedorInput = styled.div`
     width: 100%;
     height: 30px;
     margin: 5px 0;
+`
+const ContenedorBotones = styled.article`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    article {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        svg {
-            width: 20px;
-            height: 20px;
-            margin-left: 5px;
-        }
+    svg {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        cursor: pointer;
     }
 `
 
@@ -55,10 +55,10 @@ const Caracteristicas = ({ caracteristicas, cambiarCaracteristicas }) => {
                         value={caracteristica}
                         onChange={(e) => actualizarCaracteristica(index, e.target.value)}
                     />
-                    <article>
+                    <ContenedorBotones>
                         <AiFillCloseCircle style={{ color: colores.error }} onClick={() => eliminarCaracteristica(index)} />
                         <AiFillPlusCircle style={{ color: colores.verdeOscuro }} onClick={agregarCaracteristica} />
-                    </article>
+                    </ContenedorBotones>
                 </ContenedorInput>
             ))}
     </div>
