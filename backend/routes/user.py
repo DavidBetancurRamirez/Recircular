@@ -26,13 +26,13 @@ def get_users():
 
 # Retorna Usuario
 @user.get(
-    "/users/{id}",
+    "/users/{username}",
     tags=["users"],
     response_model=User,
     description="Get a single user by Id",
 )
-def get_user(id: str):
-    return conn.execute(user_table.select().where(user_table.c.id == id)).first()
+def get_user(username: str):
+    return conn.execute(user_table.select().where(user_table.c.username == username)).first()
 
 
 # Sign_Up
