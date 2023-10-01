@@ -19,9 +19,7 @@ const Contenedor = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    @media (max-width: 1000px) {
-        padding: 5px 10px;
-    }
+    @media (max-width: 1000px) { padding: 5px 10px; }
 
     @media (max-width: 800px) {
         flex-direction: column;

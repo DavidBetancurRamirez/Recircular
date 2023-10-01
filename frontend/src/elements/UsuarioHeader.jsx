@@ -25,16 +25,12 @@ const Usuario = styled.div`
     margin: 20px;
     cursor: pointer;
 
-    svg {
-        margin: 0 5px;
-    }
+    svg { margin: 0 5px; }
 
     @media (max-width: 800px) {
         margin: 10px;
 
-        p {
-            display: none;
-        }
+        p { display: none; }
     }
 `
 

@@ -14,9 +14,7 @@ const Fondo = styled.div`
     height: 100vh;
     padding: 80px;
 
-    @media (max-width: 700px) {
-        padding: 30px;
-    }
+    @media (max-width: 800px) { padding: 30px; }
 `;
 const Contenedor = styled.div`
     margin: auto;
@@ -27,9 +25,7 @@ const ContenedorHeader = styled.div`
     height: 60px;
     display: flex;
 
-    @media (max-width: 700px) {
-        height: 40px;
-    }
+    @media (max-width: 800px) { height: 40px; }
 `;
 const Header = styled.button`
     background-color: ${props => (props.$inLogin ? colores.azulClaro : colores.azulOscuro)};
@@ -41,13 +37,9 @@ const Header = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 1.3rem;
     font-weight: bold;
     color: #fff;
-
-    @media (max-width: 700px) {
-        font-size: 16px;
-    }
 `;
 
 const Sesion = () => {

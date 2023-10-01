@@ -10,7 +10,7 @@ const ContenedorFooter = styled.footer`
 
     > p {
         color: #fff;
-        font-size: 12px;
+        font-size: 0.8rem;
         width: 100%;
         text-align: center;
     }
@@ -18,10 +18,7 @@ const ContenedorFooter = styled.footer`
     @media (max-width: 800px) {
         padding: 15px;
 
-        > p {
-            font-size: 11px;
-            margin-top: 10px;
-        }
+        > p { margin-top: 10px; }
     }
 `
 const Contenedor = styled.div`
@@ -45,7 +42,7 @@ const Info = styled.div`
 
     p {
         color: #fff;
-        font-size: 13px;
+        font-size: 0.9rem;
         font-weight: lighter;
         width: 385px;
     }
@@ -63,7 +60,6 @@ const Info = styled.div`
         }
 
         p {
-            font-size: 12px;
             width: 100%;
             text-align: center;
         }
@@ -72,14 +68,9 @@ const Info = styled.div`
 const Links = styled.div`
     p {
         color: #fff;
-        font-size: 14px;
         font-weight: lighter;
         margin: 5px;
         cursor: pointer;
-
-        @media (max-width: 800px) {
-            font-size: 12px;
-        }
     }
 
     p:hover { color: ${colores.azulClaro}; }
@@ -87,13 +78,9 @@ const Links = styled.div`
     > p {
         color: ${colores.azulClaro};
         margin-bottom: 5px;
-        font-size: 15px;
-        font-weight: normal;
+        font-size: 1.1rem;
+        font-weight: bold;
         cursor: auto;
-
-        @media (max-width: 800px) {
-            font-size: 14px;
-        }
     }
 
     @media (max-width: 800px) {
@@ -109,8 +96,8 @@ const Contacto = styled.div`
     p {
         color: ${colores.azulClaro};
         margin-bottom: 10px;
-        font-size: 15px;
-        font-weight: normal;
+        font-size: 1.1rem;
+        font-weight: bold;
         cursor: auto;
     }
 
@@ -130,10 +117,6 @@ const Contacto = styled.div`
         justify-content: space-evenly;
         width: 100%;
         padding: 15px 0;
-
-        p {
-            font-size: 14px;
-        }
     }
 `
 const RedSocial = styled.div`

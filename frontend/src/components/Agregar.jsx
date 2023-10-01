@@ -23,8 +23,7 @@ const Boton = styled.button`
     border-radius: 20px;
     color: #fff;
     background-color: ${colores.azulOscuro};
-    font-size: 14px;
-    font-weight: normal;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: 0.5s all ease;
 

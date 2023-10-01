@@ -18,13 +18,13 @@ export const ContenedorSombra = styled.div`
     margin: 20px 0;
     padding: 10px 20px;
     background: linear-gradient(315deg, #ffffff, ${colores.gris});
-    box-shadow:  -5px -5px 10px #cecece,
+    box-shadow: -5px -5px 10px #cecece,
                 10px 10px 10px #ffffff;
 
     h2 {
         width: 100%;
         text-align: center;
-        font-size: 20px;
+        font-size: 1.4rem;
         margin-bottom: 20px;
     }
 `
@@ -35,7 +35,7 @@ export const Formulario = styled.form`
 
     h3 {
         font-weight: 700;
-        font-size: 15px;
+        font-size: 1.1rem;
         margin-right: 10px;
     }
 `
@@ -49,7 +49,6 @@ export const Input = styled.input`
     padding: 10px;
     width: 100%;
     height: 100%;
-    font-size: 14px;
 `
 
 export const InputFlexible = styled.textarea`
@@ -62,7 +61,6 @@ export const InputFlexible = styled.textarea`
     border-radius: 10px;
     border: 1px solid #fff;
     padding: 10px;
-    font-size: 14px;
     margin-top: 5px;
 `;
 

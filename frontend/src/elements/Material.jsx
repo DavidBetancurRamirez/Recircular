@@ -12,7 +12,6 @@ const ContenedorMaterial = styled.div`
     background-color: ${colores.verdeClaro};
     margin-right: 5px;
     text-transform: capitalize;
-    font-size: 14px;
 
     span {
         width: 12px;
