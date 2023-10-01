@@ -64,11 +64,12 @@ export const UserContextProvider = (props) => {
         try {
             const options = {
                 method: 'GET',
-                url: `/usuarios/${buscar}`,
+                url: `/users/${buscar}`,
                 headers: {}
             };
             // Se puede obtener por id o por username
-            const response = await axios.get(options);
+            const response = await axios.get(`/users/${buscar}`);
+            console.log(response)
             return response.data;
         } catch (error) {
             return null;

@@ -124,7 +124,7 @@ const ContentSesion = ({ inLogin }) => {
                 newMessage(respuesta, "error")
             } else {
                 newMessage(`Bienvenido ${username}`, "exito");
-                navigate("/");
+                // navigate("/");
             }
         } catch (error) {
             newMessage("Intentelo más tarde", "error");
