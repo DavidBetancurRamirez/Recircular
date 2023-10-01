@@ -59,7 +59,7 @@ const Boton = styled.button`
     margin: 20px;
     color: #fff;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 1.2rem;
     cursor: pointer;
 
     @media (max-width: 550px) {
