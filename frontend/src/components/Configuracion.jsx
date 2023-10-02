@@ -1,6 +1,6 @@
 
 import Layout from "./Layout";
-import colores from "../styles/colores";
+
 import { ContenedorSombra, Formulario, Input, InputFlexible, Mitad } from "../styles/varios";
 
 
