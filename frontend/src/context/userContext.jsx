@@ -5,6 +5,7 @@ import { validarEmail, validarPassword } from "../functions/Formularios";
 
 
 const userContext = createContext();
+const API_URL = 'http://localhost:8000';
 
 export const useUser = () => {
     // Para usar el contexto de usuario como un hook
@@ -19,8 +20,8 @@ export const UserContextProvider = (props) => {
     const createUser = async ({ username, email, password }) => {
         try {
             // Validacion de parametros
-            const existe = await getUser(username);
-            if (existe) return "Este usuario ya existe";
+            // const existe = await getUser(username);
+            // if (existe) return "Este usuario ya existe";
 
             if (!validarEmail(email)) return "Email no valido";
             if (!validarPassword(password)) return "La contraseña no es valida";
@@ -32,7 +33,7 @@ export const UserContextProvider = (props) => {
                 password
             };
             
-            await axios.post("/usuarios", usuario);
+            await axios.post(API_URL + "/users", usuario);
             
             setUser(usuario);
             return usuario;
@@ -62,14 +63,9 @@ export const UserContextProvider = (props) => {
 
     const getUser = async (buscar) => {
         try {
-            const options = {
-                method: 'GET',
-                url: `/users/${buscar}`,
-                headers: {}
-            };
             // Se puede obtener por id o por username
-            const response = await axios.get(`/users/${buscar}`);
-            console.log(response)
+            const response = await axios.get('http://localhost:8000/users/prueba1');
+            // console.log(response)
             return response.data;
         } catch (error) {
             return null;

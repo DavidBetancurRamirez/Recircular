@@ -9,7 +9,6 @@ import Logo3 from "../images/logo3.png";
 import UsuarioHeader from "./UsuarioHeader";
 import BusquedaHeader from "./BusquedaHeader";
 import Filtros from "./Filtros";
-import Volver from "./Volver";
 
 const Contenedor = styled.div`
     background-color: ${colores.azulClaro};
@@ -35,25 +34,14 @@ const Botones = styled.div`
     display: flex;
 
     @media (max-width: 800px) {
-        height: 40px;
+        height: 25px;
         width: 100%;
         justify-content: space-between;
-    }
-
-    @media (max-width: 600px) {
-        height: 25px;
     }
 `
 const Logo = styled.img`
     height: 100%;
     cursor: pointer;
-`
-const Contenedor2 = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 80%;
-    max-width: 350px;
 `
 
 
@@ -70,7 +58,6 @@ const Header = () => {
         else if (windowWidth>800) return LogoB
         else return Logo3
     }
-
     useEffect(() => {
         // Agregar el evento de cambio de tamaño de ventana
         window.addEventListener('resize', handleResize);
@@ -89,13 +76,9 @@ const Header = () => {
                 {windowWidth<=800 && <UsuarioHeader /> }
             </Botones>
             <BusquedaHeader />
-            {windowWidth>800 && <UsuarioHeader /> }
-            {windowWidth<=800 && 
-                <Contenedor2>
-                    <Volver />
-                    <Filtros />
-                </Contenedor2>
-            }
+            {windowWidth>800 
+            ? <UsuarioHeader />
+            : <Filtros /> }
         </Contenedor>
     )
 }

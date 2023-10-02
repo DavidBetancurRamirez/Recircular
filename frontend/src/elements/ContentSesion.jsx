@@ -79,7 +79,7 @@ const ContentSesion = ({ inLogin }) => {
     const [password, cambiarPassword] = useState("");
 
     // Contexto del usuario
-    const { createUser, login } = useUser();
+    const { createUser, login, getUser } = useUser();
 
     // Contexto de mensaje
     const { newMessage } = useMessage();
@@ -107,7 +107,11 @@ const ContentSesion = ({ inLogin }) => {
             if (inLogin) {
                 // ** Pestaña de login ** //
                 
-                respuesta = await login({ username, password });
+                // respuesta = await login({ username, password });
+                
+                respuesta = await getUser( username )
+                console.log("hola")
+                console.log(respuesta)
             } else {
                 // ** Pestaña de sign Up ** //
 
@@ -119,13 +123,13 @@ const ContentSesion = ({ inLogin }) => {
                 });
             }
 
-            if (respuesta instanceof String) {
-                // En caso de devolver un string es que hubo un error
-                newMessage(respuesta, "error")
-            } else {
-                newMessage(`Bienvenido ${username}`, "exito");
-                // navigate("/");
-            }
+            // if (respuesta instanceof String) {
+            //     // En caso de devolver un string es que hubo un error
+            //     newMessage(respuesta, "error")
+            // } else {
+            //     newMessage(`Bienvenido ${username}`, "exito");
+            //     // navigate("/");
+            // }
         } catch (error) {
             newMessage("Intentelo más tarde", "error");
         }
@@ -140,7 +144,7 @@ const ContentSesion = ({ inLogin }) => {
                         required
                         name = "username"
                         type="text"
-                        placeholder="Username"
+                        placeholder="Nombre Usuario"
                         value={username}
                         onChange={(e) => cambiarUsername(e.target.value)}
                     />
@@ -152,7 +156,7 @@ const ContentSesion = ({ inLogin }) => {
                             required
                             name = "email"
                             type="email"
-                            placeholder="Email"
+                            placeholder="Correo Electronico"
                             value={email}
                             onChange={(e) => cambiarEmail(e.target.value)}
                         />
@@ -164,13 +168,13 @@ const ContentSesion = ({ inLogin }) => {
                         required
                         name = "password"
                         type="password"
-                        placeholder="Password"
+                        placeholder="Contraseña"
                         value={password}
                         onChange={(e) => cambiarPassword(e.target.value)}
                     />
                     <RiLockPasswordFill />
                 </ContInput>
-                <Boton>{inLogin ? "Login" : "Sign Up"}</Boton>
+                <Boton>{inLogin ? "Iniciar Sesión" : "Registrarse"}</Boton>
             </Formulario>
         </Contenedor>
     )

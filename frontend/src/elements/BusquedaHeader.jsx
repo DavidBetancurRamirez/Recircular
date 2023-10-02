@@ -13,6 +13,7 @@ const ContenedorBusqueda = styled.form`
 
     @media (max-width: 800px) {
         margin: 20px;
+        margin-bottom: 10px;
         height: 30px;
     }
 `

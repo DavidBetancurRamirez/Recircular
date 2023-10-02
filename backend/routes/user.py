@@ -29,10 +29,16 @@ def get_users():
     "/users/{username}",
     tags=["users"],
     response_model=User,
-    description="Get a single user by Id",
+    description="Get a single user by Username"
 )
 def get_user(username: str):
-    return conn.execute(user_table.select().where(user_table.c.username == username)).first()
+    try:
+        user = conn.execute(user_table.select().where(user_table.c.username == username)).first()
+        if user is None:
+            raise HTTPException(status_code=404, detail="Usuario no encontrado")
+        return user
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # Sign_Up
@@ -40,8 +46,8 @@ def get_user(username: str):
 def sign_up(u: User):
     try:
         encripted_password = f.encrypt(u.password.encode("utf-8"))   
-        consulta = text('INSERT INTO user VALUES (null, :username, :email, :password, null, null, :date_created, null);')
-        valores = {"username": u.username, "email": u.email, "password": encripted_password, "date_created": datetime.now()}
+        consulta = text('INSERT INTO user VALUES (null, :username, :email, :password, null, null, :date_created, :date_updated);')
+        valores = {"username": u.username, "email": u.email, "password": encripted_password, "date_created": datetime.now(), "date_updated": datetime.now()}
         session.execute(consulta, valores)
         session.commit()
         return 'Completed'
@@ -55,7 +61,7 @@ def sign_up(u: User):
 ''' 
     "username": "tomas",
     "email": "tomas@gmail.com",
-    "password": "contrasena1",
+    "password": "Contrasena-1",
 '''
 
 # Log_In
@@ -68,7 +74,9 @@ def log_in(username: str, password: str):
             consulta = text('SELECT password FROM user WHERE user.username = :username')
             stored_password = session.execute(consulta, {'username': username}).scalar()
             print(stored_password)
-            if f.decrypt(stored_password).decode("utf-8") == password:
+            f.decrypt(stored_password).decode("utf-8")
+            if stored_password == f.encrypt(password.encode("utf-8")):
+                print("hola")
                 return {"message": "Login successful"}
         return {"message": "Login unsuccessful"}
     except Exception as e:
@@ -123,3 +131,4 @@ def add_shipping_address(id: int, s: ShippingAddress):
         print(f"Error al insertar en la base de datos: {e}")
         return 'Non Completed'
         
+
