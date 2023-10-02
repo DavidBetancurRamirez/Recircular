@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import styled from "styled-components";
 import colores from "../styles/colores";
 import Logo from "../images/logo4.png"
@@ -142,6 +144,8 @@ const RedSocial = styled.div`
 
 
 const Footer = () => {
+    const navigate = useNavigate();
+
     return (
         <ContenedorFooter>
             <Contenedor>
@@ -153,12 +157,12 @@ const Footer = () => {
                 <Links>
                     <p>Links útiles</p>
                     <div>
-                        <p>Principal</p>
-                        <p>Agregar Producto</p>
+                        <p onClick={() => navigate("/")}>Principal</p>
+                        <p onClick={() => navigate("/agregar")}>Agregar Producto</p>
                     </div>
                     <div>
-                        <p>Perfil</p>
-                        <p>Carrito</p>
+                        <p onClick={() => navigate("/perfil")}>Perfil</p>
+                        <p onClick={() => navigate("/car")}>Carrito</p>
                     </div>
                 </Links>
 
