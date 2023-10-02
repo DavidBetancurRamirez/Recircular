@@ -8,7 +8,11 @@ const Contenedor = styled.div`
     > div {
         display: flex;
         align-items: center;
-        font-size: 12px;
+    }
+
+    .comentario { 
+        font-size: 0.9rem;
+        font-weight: lighter;
     }
 
     @media (max-width: 800px) { margin-top: 20px; }
@@ -80,7 +84,7 @@ const Imagenes = ({ imagenes, cambiarImagenes }) => {
                     />
                     Agregar imagen
                 </AgregarImg>
-                <p>Recomendamos imágenes cuadradas</p>
+                <p className='comentario'>Recomendamos imágenes cuadradas</p>
             </div>
             <ContenedorScroll>
                 {imagenes.map((imagen, index) => {

@@ -2,20 +2,13 @@ import styled from "styled-components";
 import colores from "./colores";
 
 
-export const ContenedorPrincipal = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    margin: 20px auto;
-    width: 90%;
-    max-width: 1000px;
-`
 export const ContenedorSombra = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 90%;
+    max-width: 1000px;
     border-radius: 20px;
-    margin: 20px 0;
+    margin: 40px auto;
     padding: 10px 20px;
     background: linear-gradient(315deg, #ffffff, ${colores.gris});
     box-shadow: -5px -5px 10px #cecece,
@@ -26,6 +19,10 @@ export const ContenedorSombra = styled.div`
         text-align: center;
         font-size: 1.4rem;
         margin-bottom: 20px;
+    }
+
+    @media (max-width: 800px) {
+        margin: 20px auto;
     }
 `
 
