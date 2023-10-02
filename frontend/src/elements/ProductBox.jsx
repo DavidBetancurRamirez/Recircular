@@ -1,8 +1,22 @@
 import {Box,Grid,Typography,Rating} from "@mui/material";
 import colores from "../styles/colores";
- import imgStyle from "../styles/imgStyle.css";
+import  "../styles/imgStyle.css";
 import { GiShoppingCart } from "react-icons/gi"
 import InfoBox from "./InfoBox"; 
+import styled from "styled-components";
+
+const Contenedor = styled.article`
+    display: flex;
+
+    .estrellas {
+    font-size: 20px;
+
+    .MuiRating-iconFilled,
+    .MuiRating-iconEmpty {
+        font-size: 20px;
+    }
+    `
+ 
 
 const ProductBox= () => {
 
@@ -26,8 +40,16 @@ const ProductBox= () => {
                             <Box sx={{width: 0.5 }}>
                                 <Typography variant ="body" component ="h3">
                                 PrimaderaSAS
-                                </Typography>                         
-                                <Rating   value={4.5} precision={0.5}  readOnly />
+                                </Typography>     
+                                <Contenedor>  
+                                <Rating  
+                                 value={4.5}
+                                precision={0.5} 
+                                 readOnly 
+                                 className="estrellas"
+                                 />
+                                 </Contenedor>                    
+                                
 
                             </Box>
                         </Grid>
@@ -38,10 +60,11 @@ const ProductBox= () => {
                                     backgroundColor: colores.azulOscuro,
                                     borderRadius: 5,             
                                     maxWidth: 110,
+                                    minWidth: 80,
                                     maxHeight: 40,
                                     display: "flex",
                                     alignItems: "center",
-                                    pl: 1.5,
+                                    pl:2,
                                 
 
                                 }}>
