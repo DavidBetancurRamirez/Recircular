@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Layout from "./Layout";
 import SelecMateriales from "../elements/SelecMateriales";
-import Imagenes from "../elements/Imagenes";
+import ImgAgregar from "../elements/ImgAgregar";
 import Caracteristicas from "../elements/Caracteristicas";
 
 import styled from "styled-components";
@@ -60,7 +60,7 @@ const Agregar = () => {
 
                     <Mitad>
                         <SelecMateriales materiales={materiales} cambiarMateriales={cambiarMateriales} />
-                        <Imagenes imagenes={imagenes} cambiarImagenes={cambiarImagenes} />
+                        <ImgAgregar imagenes={imagenes} cambiarImagenes={cambiarImagenes} />
                     </Mitad>
 
                     <div>
