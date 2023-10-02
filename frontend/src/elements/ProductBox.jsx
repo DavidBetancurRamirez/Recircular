@@ -1,10 +1,7 @@
 import {Box,Grid,Typography} from "@mui/material";
-import Alm from "../images/aluminio1.jpg"
-import Caneleta from "../images/caneleta1.jpg"
 import colores from "../styles/colores";
 import "../App.css"
 import { GiShoppingCart } from "react-icons/gi"
-import ImgGrid from "./ImgGrid";
 
 const ProductBox= () => {
 
