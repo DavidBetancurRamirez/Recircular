@@ -75,6 +75,7 @@ export const ContenedorScroll = styled.article`
 export const Mitad = styled.div`
     display: flex;
     margin-bottom: 20px;
+    width: 100%;
 
     > div { width: 50%; }
 

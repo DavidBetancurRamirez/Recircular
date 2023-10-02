@@ -6,9 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserContextProvider } from './context/userContext';
 import { LoadingContextProvider } from './context/loadingContext';
 import { MessageContextProvider } from './context/messageContext';
+
 import App from './App';
 import Sesion from './components/Sesion';
 import Agregar from './components/Agregar';
+import Producto from './components/Producto';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -25,6 +27,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path='/' element={<App />} />
               <Route path='/sesion' element={<Sesion />} />
               <Route path='/agregar' element={<Agregar />} />
+              <Route path='/producto' element={<Producto />} />
             </Routes>
           </BrowserRouter>
 
