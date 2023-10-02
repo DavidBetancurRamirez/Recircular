@@ -19,9 +19,7 @@ const Contenedor = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    @media (max-width: 1000px) {
-        padding: 5px 10px;
-    }
+    @media (max-width: 1000px) { padding: 5px 10px; }
 
     @media (max-width: 800px) {
         flex-direction: column;
@@ -34,13 +32,9 @@ const Botones = styled.div`
     display: flex;
 
     @media (max-width: 800px) {
-        height: 40px;
+        height: 25px;
         width: 100%;
         justify-content: space-between;
-    }
-
-    @media (max-width: 600px) {
-        height: 25px;
     }
 `
 const Logo = styled.img`
@@ -62,7 +56,6 @@ const Header = () => {
         else if (windowWidth>800) return LogoB
         else return Logo3
     }
-
     useEffect(() => {
         // Agregar el evento de cambio de tamaño de ventana
         window.addEventListener('resize', handleResize);
@@ -78,11 +71,12 @@ const Header = () => {
         <Contenedor>
             <Botones>
                 <Logo src={cambiarLogo()} alt="Logo recircular" onClick={() => navigate("/")}  />
-                {window.innerWidth<=800 && <UsuarioHeader /> }
+                {windowWidth<=800 && <UsuarioHeader /> }
             </Botones>
             <BusquedaHeader />
-            {window.innerWidth>800 && <UsuarioHeader /> }
-            {window.innerWidth<=800 && <Filtros /> }
+            {windowWidth>800 
+            ? <UsuarioHeader />
+            : <Filtros /> }
         </Contenedor>
     )
 }

@@ -25,7 +25,8 @@ const colores = {
         vidrio: '#2E8B57'
     },
     error: '#E34747',
-    exito: '#43A854'
+    exito: '#43A854',
+    grisClaro: '#E8EFF1'
 }
 
 export default colores
