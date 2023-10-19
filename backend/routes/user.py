@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from config.db import conn, session
 from models.user import users as user_table
-from schemas.user import User, ShippingAddress
+from schemas.user import User, ShippingAddress, Product
 from datetime import datetime
 from sqlalchemy import select, text
 from passlib.context import CryptContext
@@ -14,6 +14,7 @@ user = APIRouter()
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto") 
 
 
+# Mostrar todos los Usuarios
 @user.get(
     "/users",
     tags=["users"],
@@ -24,7 +25,7 @@ def get_users():
     return conn.execute(user_table.select()).fetchall()
 
 
-# Retorna Usuario
+# Mostrar un Usuario (Arreglar Internal Server Error)
 @user.get(
     "/users/{username}",
     tags=["users"],
@@ -40,7 +41,8 @@ def get_user(username: str):
         print(f"Error al insertar en la base de datos: {e}")
 
 
-# Sign_Up
+
+# Registro de Usuario
 @user.post("/signup", tags=["users"], description="Create a new user")
 def sign_up(u: User):
     try:
@@ -64,7 +66,7 @@ def sign_up(u: User):
     "password": "Contraseña-123",
 '''
 
-# Log_In
+# Inicio de Sesión
 @user.post("/login", tags=["users"], description="Login")
 def log_in(username: str, password: str):
     try:
@@ -84,15 +86,14 @@ def log_in(username: str, password: str):
         session.close()      
 
 
-# Update_Profile
+# Modificación del perfil
 @user.put(
     "/users/{id}", tags=["users"], description="Update a User by Id"
 )
-def update_user(u: User, id: int):
+def update_user(u: User, id: str):
     try:
-        encripted_password = pwd_context.hash(u.password) 
-        consulta = text('UPDATE user SET user.username = :username, user.email = :email, user.password = :password, user.phone = :phone, user.date_updated = :date_updated WHERE user.id = :id;')
-        valores = {"username": u.username, "email": u.email, "password": encripted_password, "phone": u.phone, "date_updated": datetime.now(), "id": id}
+        consulta = text('UPDATE user SET user.username = :username, user.email = :email, user.phone = :phone, user.date_updated = :date_updated WHERE user.id = :id;')
+        valores = {"username": u.username, "email": u.email, "phone": u.phone, "date_updated": datetime.now(), "id": id}
         session.execute(consulta, valores)
         session.commit()
         return 'Completed'
@@ -111,19 +112,19 @@ def update_user(u: User, id: int):
    "postal_code": "044550"
 '''
 
+
+# Agregar dirección de envío (Clave foraneas)
 @user.post(
-    "/users/ShippingAddress", tags=["users"], description="Add a Shipping Address"
+    "/users/shippingaddress", tags=["users"], description="Add a Shipping Address"
 )
 def add_shipping_address(id: str, s: ShippingAddress):
     try:
-        consulta = text('INSERT INTO shipping_address VALUES (:uuid, :country, :city, :province, :address, :description, :postal_code)')
+        consulta = text('INSERT INTO shipping_address VALUES (null, :country, :city, :province, :address, :description, :postal_code);')
         valores = {"country": s.country, "city": s.city, "province": s.province, "address": s.address, "description" : s.description, "postal_code" : s.postal_code}
         session.execute(consulta, valores)
         session.commit()
         
-        id_sa = session.execute(text("SELECT id FROM shipping_address WHERE shipping_address.address = :address ORDER BY id DESC"), {"address" : s.address}).first()
-        
-        print(id_sa)
+        id_sa = session.execute(text("SELECT id FROM shipping_address WHERE shipping_address.address = :address ORDER BY id DESC"), {"address" : s.address}).first()[0]
         
         consulta_usuario = text("UPDATE user SET user.ShippingAddress_id = :ShippingAddress_id WHERE user.id = :id;")
         valores_usuario = {"ShippingAddress_id" : int(id_sa), "id" : id}
@@ -135,5 +136,68 @@ def add_shipping_address(id: str, s: ShippingAddress):
         print(f"Error al insertar en la base de datos: {e}")
         return {"message" : "Non Completed"}
     finally:
-        session.close()  
+        session.close()
         
+
+# Agregar Producto
+@user.post(
+    "/users/create_product", tags=["users"], description="Add a Product"
+)
+def add_product(id: str, p: Product):
+    try:
+        new_id = str(uuid.uuid4())
+        consulta = text('INSERT INTO product VALUES (:id, :user_id, :name, :description, :price, :stock, :date_created);')
+        valores = {"id": new_id, "user_id": id, "name": p.name, "description": p.description, "price": p.price, "stock": p.stock, "date_created": datetime.now()}
+        session.execute(consulta, valores)
+        session.commit()
+        return {"message": "Product Created", "uuid": new_id}
+    except Exception as e:
+        print(f"Error al insertar en la base de datos: {e}")
+        return {"message" : "Product not created"}
+        
+'''
+    "name": "Aserrin",
+    "description": "Conjunto de partículas que se desprenden de la madera cuando se sierra",
+    "price": 30000,
+    "stock": 50,
+    "date_created": "2023-10-18T21:12:01.461Z"
+'''
+
+# Mostrar productos del usuario
+@user.get(
+    "/users/{username}/products",
+    tags=["users", "products"],
+    description="Get all Products form the User"
+)
+def get_products_user(username: str):
+    try:
+        consulta_id = text("SELECT id FROM user WHERE user.username = :username")
+        id = session.execute(consulta_id, {"username" : username}).first()[0]
+        consulta = text("SELECT * FROM product WHERE product.user_id = :user_id")
+        results = session.execute(consulta, {"user_id" : id}).fetchall()
+        
+        return [Product(
+                id=row[0], 
+                user_id=row[1], 
+                name=row[2], 
+                description=row[3], 
+                price=row[4], 
+                stock=row[5], 
+                date_created=row[6]
+            ) for row in results]
+    except Exception as e:
+        print(f"Error al insertar en la base de datos: {e}")
+    finally:
+        session.close()
+        
+
+# Mostrar producto
+@user.get(
+    "/product/{id}",
+    tags=["product"],
+    description="Get one Product"
+)
+def get_product(id: str):
+    consulta = text("SELECT * FROM product WHERE product.id = :id;")
+    return session.execute(consulta, {"id" : id})
+

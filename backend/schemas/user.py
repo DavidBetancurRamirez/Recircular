@@ -23,3 +23,13 @@ class ShippingAddress(BaseModel):
     postal_code: Optional[str] = None
 
 
+class Product(BaseModel):
+    id: Optional[str] = None
+    user_id: Optional[str] = None
+    name: str
+    description: str
+    price: float
+    stock: int
+    date_created: datetime
+    
+
