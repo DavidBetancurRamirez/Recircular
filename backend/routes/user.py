@@ -223,18 +223,42 @@ def get_products_user(username: str):
         consulta_id = text("SELECT id FROM user WHERE user.username = :username")
         id = session.execute(consulta_id, {"username" : username}).first()[0]
         
-        consulta = text("SELECT p.*, m.material, u.url FROM product p LEFT JOIN material m ON p.id = m.product_id LEFT JOIN url u ON p.id = u.product_id WHERE p.user_id = :user_id")
+        # consulta = text("SELECT p.*, m.material, u.url FROM product p LEFT JOIN material m ON p.id = m.product_id LEFT JOIN url u ON p.id = u.product_id WHERE p.user_id = :user_id")
+        consulta = text("SELECT * FROM product WHERE product.user_id = :user_id")
         results = session.execute(consulta, {"user_id" : id}).fetchall()
         
-        return [Product(
-                id=row[0], 
-                user_id=row[1], 
-                name=row[2], 
-                description=row[3], 
-                characteristics=row[4], 
-                stock=row[5], 
-                date_created=row[6]
-            ) for row in results]
+        products = {}
+        for row in results:
+            product_id = row[0]
+            consulta_materials = text("SELECT * FROM material WHERE material.product_id = :product_id")
+            results_material = session.execute(consulta_materials, {"product_id" : product_id}).fetchall()
+            
+            consulta_urls = text("SELECT * FROM url WHERE url.product_id = :product_id")
+            results_urls = session.execute(consulta_urls, {"product_id" : product_id}).fetchall()
+            
+            print(results_material)
+            print(results_urls)
+            
+            if product_id not in products:
+                products[product_id] = {
+                    "id": row[0],
+                    "user_id": row[1],
+                    "name": row[2],
+                    "description": row[3],
+                    "characteristics": row[4],
+                    "status": row[5],
+                    "date_created": row[6],
+                    "material": [],
+                    "url": []
+                }
+            for row in results_material:
+                material_id = row[0]
+                products[product_id]["material"]
+            for row in results_urls:
+                url_id = row[0]
+                products[product_id]["url"] = row[2]
+        
+        return list(products.values())
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
     finally:
