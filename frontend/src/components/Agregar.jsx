@@ -46,7 +46,17 @@ const Agregar = () => {
             <ContenedorSombra>
                 <h2>Agregar Producto</h2>
                 <Formulario>
-                          
+                    <ContenedorInput>
+                        <h3>Nombre</h3>
+                        <Input 
+                            required
+                            name = "nombre"
+                            type="text"
+                            placeholder="Nombre"
+                            value={nombre}
+                            onChange={(e) => cambiarNombre(e.target.value)}
+                        />
+                    </ContenedorInput>
 
                     <Mitad>
                         <SelecMateriales materiales={materiales} cambiarMateriales={cambiarMateriales} />
