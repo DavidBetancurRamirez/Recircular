@@ -63,7 +63,7 @@ export const InputFlexible = styled.textarea`
 
 export const ContenedorScroll = styled.article`
     display: flex;
-    width: 90%;
+    width: ${props => (props.size=="full" ? "100%" : "90%")};
     white-space: nowrap;
     overflow-x: auto;
 

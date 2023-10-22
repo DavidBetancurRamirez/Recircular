@@ -5,7 +5,7 @@ import GridBox from "./elements/GridBox"
 const App = () => {
   return (
     <Layout>
-    <GridBox> </GridBox>
+      <GridBox />
     </Layout>
   )
 }
