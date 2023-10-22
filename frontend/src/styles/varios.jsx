@@ -83,3 +83,18 @@ export const Mitad = styled.div`
         > div { width: 100% }
     }
 `
+export const Tercio = styled.div`
+    display: flex;
+    margin-bottom: 20px;
+
+    > div:first-child { 
+        
+        width: 30%;
+     }
+    > div:last-child { width: 70%; } 
+
+    @media (max-width: 800px) {
+        flex-direction: column;
+        > div { width: 100%; }
+    }
+`;

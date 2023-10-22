@@ -9,7 +9,8 @@ import { MessageContextProvider } from './context/messageContext';
 import App from './App';
 import Sesion from './components/Sesion';
 import Agregar from './components/Agregar';
-import Configuracion from './components/Configuracion';
+import Perfil from './components/Perfil';
+
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -26,7 +27,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path='/' element={<App />} />
               <Route path='/sesion' element={<Sesion />} />
               <Route path='/agregar' element={<Agregar />} />
-              <Route path='/configuracion' element={<Configuracion />} />
+              <Route path='/perfil' element={<Perfil/>} />
+           
             </Routes>
           </BrowserRouter>
 
