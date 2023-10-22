@@ -2,6 +2,8 @@ from sqlalchemy import Table, Column, ForeignKey, UniqueConstraint, Index, MetaD
 from config.db import meta, engine
 from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Float, ARRAY, Boolean
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.dialects.mysql import *
+import uuid
 
 
 users = Table("user", meta, 
