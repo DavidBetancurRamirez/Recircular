@@ -29,14 +29,12 @@ def get_users():
 @user.get(
     "/users/{username}",
     tags=["users"],
-<<<<<<< HEAD
     description="Get a single user by Username",
 )
 def get_user(username: str):
     try:
         consulta = text("SELECT * FROM user WHERE user.username = :username")
         user_return = session.execute(consulta, {"username" : username}).first()
-        print(user_return)
         if user_return is not None:
             return user_return._asdict()
         else:
@@ -44,80 +42,54 @@ def get_user(username: str):
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
 
-=======
-    response_model=User,
-    description="Get a single user by Username"
-)
-def get_user(username: str):
-    try:
-        user = conn.execute(user_table.select().where(user_table.c.username == username)).first()
-        if user is None:
-            raise HTTPException(status_code=404, detail="Usuario no encontrado")
-        return user
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
->>>>>>> fc5c4d183801e73d74d79704d99ce4b726dbce9b
-
 
 # Registro de Usuario
 @user.post("/signup", tags=["users"], description="Create a new user")
 def sign_up(u: User):
     try:
-<<<<<<< HEAD
         new_id = str(uuid.uuid4())
         encripted_password = pwd_context.hash(u.password)
+        
         consulta = text('INSERT INTO user VALUES (:uuid, :username, :email, :password, null, null, :date_created, :date_updated);')
         valores = {"uuid": new_id, "username": u.username, "email": u.email, "password": encripted_password, "date_created": datetime.now(), "date_updated" : datetime.now()}
-=======
-        encripted_password = f.encrypt(u.password.encode("utf-8"))   
-        consulta = text('INSERT INTO user VALUES (null, :username, :email, :password, null, null, :date_created, :date_updated);')
-        valores = {"username": u.username, "email": u.email, "password": encripted_password, "date_created": datetime.now(), "date_updated": datetime.now()}
->>>>>>> fc5c4d183801e73d74d79704d99ce4b726dbce9b
-        session.execute(consulta, valores)
+        
+        session.execute(consulta, valores)      
         session.commit()
-        return {"message": "SignUp successful", "uuid": new_id}
+        
+        consulta = text("SELECT * FROM user WHERE user.id = :id")
+        return session.execute(consulta, {"id" : new_id}).first()._asdict()
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
-        return {"message": "SignUp unsuccessful"} 
+        return None
     finally:
         session.close()
 
 
 ''' 
-<<<<<<< HEAD
     "username": "Tomaslopera10",
     "email": "loperatomas410@gmail.com",
     "password": "Contraseña-123",
-=======
     "username": "tomas",
     "email": "tomas@gmail.com",
     "password": "Contrasena-1",
->>>>>>> fc5c4d183801e73d74d79704d99ce4b726dbce9b
 '''
 
 # Inicio de Sesión
 @user.post("/login", tags=["users"], description="Login")
-def log_in(username: str, password: str):
+def log_in(u : User):
     try:
         consulta = text('SELECT id FROM user WHERE user.username = :username')
-        user_id = session.execute(consulta, {'username': username}).scalar()
+        user_id = session.execute(consulta, {'username': u.username}).scalar()
         if user_id:
             consulta = text('SELECT password FROM user WHERE user.username = :username')
-            stored_password = session.execute(consulta, {'username': username}).scalar()
-            print(stored_password)
-<<<<<<< HEAD
-            if pwd_context.verify(password, stored_password):
-                return {"uuid": user_id}
-=======
-            f.decrypt(stored_password).decode("utf-8")
-            if stored_password == f.encrypt(password.encode("utf-8")):
-                print("hola")
-                return {"message": "Login successful"}
->>>>>>> fc5c4d183801e73d74d79704d99ce4b726dbce9b
-        return {"message": "Login unsuccessful"}
+            stored_password = session.execute(consulta, {'username': u.username}).scalar()
+            if pwd_context.verify(u.password, stored_password):
+                consulta = text("SELECT * FROM user WHERE user.id = :id")
+                return session.execute(consulta, {"id" : user_id}).first()._asdict()
+        return None
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
-        return {"message": "Login unsuccessful"} 
+        return None
     finally:
         session.close()      
 
@@ -324,11 +296,7 @@ def get_product(id: str):
         #     ) for row in results]
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
-<<<<<<< HEAD
     finally:
         session.close()
-=======
         return 'Non Completed'
         
-
->>>>>>> fc5c4d183801e73d74d79704d99ce4b726dbce9b

@@ -1,6 +1,6 @@
 
 export const validarEmail = (email) => {
-    let expresion = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3,4})+$/;
+    let expresion = /^\w+([.-]?\w+)@\w+([.-]?\w+)\.\w{2,}$/;
 
     // Devuelve true si es valida
     return expresion.test(email);
