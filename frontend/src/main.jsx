@@ -11,6 +11,7 @@ import App from './App';
 import Sesion from './components/Sesion';
 import Agregar from './components/Agregar';
 import Producto from './components/Producto';
+import Perfil from './components/Perfil';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -28,6 +29,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path='/sesion' element={<Sesion />} />
               <Route path='/agregar' element={<Agregar />} />
               <Route path='/producto' element={<Producto />} />
+              <Route path='/perfil' element={<Perfil/>} />
             </Routes>
           </BrowserRouter>
 

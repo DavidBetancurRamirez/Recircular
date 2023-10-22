@@ -63,7 +63,7 @@ export const InputFlexible = styled.textarea`
 
 export const ContenedorScroll = styled.article`
     display: flex;
-    width: ${props => (props.size=="full" ? "100%" : "90%")};
+    width: 90%;
     white-space: nowrap;
     overflow-x: auto;
 
@@ -75,7 +75,6 @@ export const ContenedorScroll = styled.article`
 export const Mitad = styled.div`
     display: flex;
     margin-bottom: 20px;
-    width: 100%;
 
     > div { width: 50%; }
 
@@ -84,3 +83,18 @@ export const Mitad = styled.div`
         > div { width: 100% }
     }
 `
+export const Tercio = styled.div`
+    display: flex;
+    margin-bottom: 20px;
+
+    > div:first-child { 
+        
+        width: 30%;
+     }
+    > div:last-child { width: 70%; } 
+
+    @media (max-width: 800px) {
+        flex-direction: column;
+        > div { width: 100%; }
+    }
+`;
