@@ -228,19 +228,19 @@ def get_products_user(username: str):
         results = session.execute(consulta, {"user_id" : id}).fetchall()
         
         products = {}
+        i = 0
         for row in results:
-            product_id = row[0]
             consulta_materials = text("SELECT * FROM material WHERE material.product_id = :product_id")
-            results_material = session.execute(consulta_materials, {"product_id" : product_id}).fetchall()
+            results_material = session.execute(consulta_materials, {"product_id" : row[0]}).fetchall()
             
             consulta_urls = text("SELECT * FROM url WHERE url.product_id = :product_id")
-            results_urls = session.execute(consulta_urls, {"product_id" : product_id}).fetchall()
+            results_urls = session.execute(consulta_urls, {"product_id" : row[0]}).fetchall()
             
             print(results_material)
             print(results_urls)
             
-            if product_id not in products:
-                products[product_id] = {
+            
+            products[i] = {
                     "id": row[0],
                     "user_id": row[1],
                     "name": row[2],
@@ -250,13 +250,16 @@ def get_products_user(username: str):
                     "date_created": row[6],
                     "material": [],
                     "url": []
-                }
+            }
+            
             for row in results_material:
                 material_id = row[0]
-                products[product_id]["material"]
+                for r in row[2]:
+                    products[i]["material"] 
             for row in results_urls:
                 url_id = row[0]
-                products[product_id]["url"] = row[2]
+                products[i]["url"] = row[2]
+            i += 1
         
         return list(products.values())
     except Exception as e:
