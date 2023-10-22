@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Header from "../elements/Header";
 import Footer from "../elements/Footer";
 
+
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;

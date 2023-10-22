@@ -3,7 +3,7 @@ import axios from "axios"
 import { createContext, useContext, useState } from "react"
 import { validarEmail, validarPassword } from "../functions/Formularios";
 
-
+const API_BASE_URL = 'http://localhost:8000';
 const userContext = createContext();
 const API_URL = 'http://localhost:8000';
 
@@ -64,8 +64,7 @@ export const UserContextProvider = (props) => {
     const getUser = async (buscar) => {
         try {
             // Se puede obtener por id o por username
-            const response = await axios.get('http://localhost:8000/users/prueba1');
-            // console.log(response)
+            const response = await axios.get(`${API_BASE_URL}/users/${buscar}`);
             return response.data;
         } catch (error) {
             return null;

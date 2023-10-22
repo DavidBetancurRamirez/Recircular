@@ -13,7 +13,7 @@ const ContenedorFiltros = styled.div`
     cursor: pointer;
 
     p {
-        font-size: 15px;
+        font-size: 1.1rem;
         font-weight: lighter;
     }
 

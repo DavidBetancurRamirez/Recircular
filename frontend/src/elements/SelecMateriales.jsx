@@ -19,7 +19,6 @@ const ContenedorSelect = styled.div`
     justify-content: space-between;
     position: relative;
     transition: 1s ease all;
-    font-size: 15px;
     text-transform: capitalize;
     z-index: 1;
 
