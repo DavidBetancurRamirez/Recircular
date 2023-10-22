@@ -35,26 +35,12 @@ def get_user(username: str):
     try:
         consulta = text("SELECT * FROM user WHERE user.username = :username")
         user_return = session.execute(consulta, {"username" : username}).first()
-        print(user_return)
         if user_return is not None:
             return user_return._asdict()
         else:
             return None
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
-
-    response_model=User,
-    description="Get a single user by Username"
-
-
-def get_user(username: str):
-    try:
-        user = conn.execute(user_table.select().where(user_table.c.username == username)).first()
-        if user is None:
-            raise HTTPException(status_code=404, detail="Usuario no encontrado")
-        return user
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 # Registro de Usuario
@@ -63,16 +49,18 @@ def sign_up(u: User):
     try:
         new_id = str(uuid.uuid4())
         encripted_password = pwd_context.hash(u.password)
+        
         consulta = text('INSERT INTO user VALUES (:uuid, :username, :email, :password, null, null, :date_created, :date_updated);')
         valores = {"uuid": new_id, "username": u.username, "email": u.email, "password": encripted_password, "date_created": datetime.now(), "date_updated" : datetime.now()}
-        consulta = text('INSERT INTO user VALUES (null, :username, :email, :password, null, null, :date_created, :date_updated);')
-        valores = {"username": u.username, "email": u.email, "password": encripted_password, "date_created": datetime.now(), "date_updated": datetime.now()}
-        session.execute(consulta, valores)
+        
+        session.execute(consulta, valores)      
         session.commit()
-        return {"message": "SignUp successful", "uuid": new_id}
+        
+        consulta = text("SELECT * FROM user WHERE user.id = :id")
+        return session.execute(consulta, {"id" : new_id}).first()._asdict()
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
-        return {"message": "SignUp unsuccessful"} 
+        return None
     finally:
         session.close()
 
@@ -88,20 +76,20 @@ def sign_up(u: User):
 
 # Inicio de Sesión
 @user.post("/login", tags=["users"], description="Login")
-def log_in(username: str, password: str):
+def log_in(u : User):
     try:
         consulta = text('SELECT id FROM user WHERE user.username = :username')
-        user_id = session.execute(consulta, {'username': username}).scalar()
+        user_id = session.execute(consulta, {'username': u.username}).scalar()
         if user_id:
             consulta = text('SELECT password FROM user WHERE user.username = :username')
-            stored_password = session.execute(consulta, {'username': username}).scalar()
-            print(stored_password)
-            if pwd_context.verify(password, stored_password):
-                return {"message": "Login successful", "uuid": user_id}
-        return {"message": "Login unsuccessful"}
+            stored_password = session.execute(consulta, {'username': u.username}).scalar()
+            if pwd_context.verify(u.password, stored_password):
+                consulta = text("SELECT * FROM user WHERE user.id = :id")
+                return session.execute(consulta, {"id" : user_id}).first()._asdict()
+        return None
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
-        return {"message": "Login unsuccessful"} 
+        return None
     finally:
         session.close()      
 

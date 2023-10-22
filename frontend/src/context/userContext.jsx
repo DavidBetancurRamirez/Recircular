@@ -5,7 +5,6 @@ import { validarEmail, validarPassword } from "../functions/Formularios";
 
 const API_BASE_URL = 'http://localhost:8000';
 const userContext = createContext();
-const API_URL = 'http://localhost:8000';
 
 export const useUser = () => {
     // Para usar el contexto de usuario como un hook
@@ -17,12 +16,8 @@ export const useUser = () => {
 export const UserContextProvider = (props) => {
     const [user, setUser] = useState(null);
 
-    const createUser = async ({ username, email, password }) => {
+    const signUp = async ({ username, email, password }) => {
         try {
-            // Validacion de parametros
-            // const existe = await getUser(username);
-            // if (existe) return "Este usuario ya existe";
-
             if (!validarEmail(email)) return "Email no valido";
             if (!validarPassword(password)) return "La contraseña no es valida";
 
@@ -32,8 +27,8 @@ export const UserContextProvider = (props) => {
                 email,
                 password
             };
-            
-            await axios.post(API_URL + "/users", usuario);
+            // SI es null es que usuario o contraseña ya existen
+            const response = await axios.post(API_BASE_URL + "/signup", usuario);
             
             setUser(usuario);
             return usuario;
@@ -65,34 +60,32 @@ export const UserContextProvider = (props) => {
         try {
             // Se puede obtener por id o por username
             const response = await axios.get(`${API_BASE_URL}/users/${buscar}`);
-            return response.data;
+            return response?.data;
         } catch (error) {
-            return null;
+            return null
         }
     }
     
     const login = async ({ username, password }) => {
-        const mensaje = "Username o password no validos";
-
-        // Obtener usuario
-        const usuario = await getUser(username);
-        if (!usuario) throw new Error(mensaje)
-
-        // Validar password
-        const iguales = usuario.getPassword===password;
-
-        // En caso de no coincidir devolver mensaje
-        if (!usuario || !iguales) throw new Error(mensaje)
-
-        setUser(usuario);
-        return usuario;
+        try {
+            // SI ES NULL NO SE PUEDE
+            const usuario = await axios.post(
+                            `${API_BASE_URL}/login`,
+                            { username, password });
+            
+            console.log(usuario)
+            setUser(usuario);
+            return usuario;
+        } catch (error) {
+            throw new Error("Intentelo más tarde");
+        }
     }
 
     return (
         <userContext.Provider
             value={{
                 user,
-                createUser,
+                signUp,
                 deleteUser,
                 editUser,
                 getUser,

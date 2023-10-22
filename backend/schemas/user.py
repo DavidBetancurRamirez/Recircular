@@ -5,11 +5,11 @@ from datetime import datetime
 class User(BaseModel):
     id: Optional[str] = None
     username: str
-    email: str
+    email: Optional[str] = None
     password: str
     phone: Optional[str] = None
     ShippingAddress_id: Optional[int] = None
-    date_created: datetime
+    date_created: Optional[datetime] = None
     date_updated: Optional[datetime] = None
     
 
