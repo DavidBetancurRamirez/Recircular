@@ -35,6 +35,12 @@ const Boton = styled.button`
 const Perfil = () => {
     const [imagenes, cambiarImagenes] = useState([])
 
+    const [nombre, cambiarNombre] = useState("");
+    const [correo, cambiarCorreo] = useState("");
+    const [password, cambiarPassword] = useState("");
+    const [telefono, cambiarTelefono] = useState("");
+    const [direccion, cambiarDireccion] = useState("");
+
     return (
       <Layout>
         <ContenedorSombra>
@@ -49,28 +55,60 @@ const Perfil = () => {
                         required 
                         name = "Nombre"
                         type="text"
-                        placeholder="Nombre de Perfil"
-                        />
-                    
+                        placeholder="Nombre de Usuario"
+                        value={nombre}
+                        onChange={(e) => cambiarNombre(e.target.value)}
+                    />
                 </div>
+
                 <div>
                     <h3>Correo</h3>
                     <Input
                         required 
-                        name = "Nombre"
+                        name = "Correo"
                         type="email"
-                        placeholder="Correo Electronico"/>
-                    
+                        placeholder="Correo Electronico"
+                        value={correo}
+                        onChange={(e) => cambiarCorreo(e.target.value)}
+                    />
                 </div>
+
                 <div>
                     <h3>Contraseña</h3>
                     <Input
                         required 
-                        name = "Contraseña"
+                        name = "Contrasena"
                         type="password"
-                        placeholder="Contraseña"/>
-                    
+                        placeholder="Contrasena"
+                        value={password}
+                        onChange={(e) => cambiarPassword(e.target.value)}
+                    />
                 </div>
+
+                <div>
+                    <h3>Telefono</h3>
+                    <Input
+                        required 
+                        name = "telefono"
+                        type="text"
+                        placeholder="Telefono"
+                        value={telefono}
+                        onChange={(e) => cambiarTelefono(e.target.value)}
+                    />
+                </div>
+
+                <div>
+                    <h3>Dirrección</h3>
+                    <Input
+                        required 
+                        name = "direccion"
+                        type="text"
+                        placeholder="direccion"
+                        value={direccion}
+                        onChange={(e) => cambiarDireccion(e.target.value)}
+                    />
+                </div>
+
                 <Boton>Actualizar</Boton>
                 <Boton>Eliminar</Boton>
 
