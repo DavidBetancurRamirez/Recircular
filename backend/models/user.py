@@ -1,6 +1,6 @@
 from sqlalchemy import Table, Column, ForeignKey, UniqueConstraint, Index, MetaData
 from config.db import meta, engine
-from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Float
+from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Float, ARRAY, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -33,25 +33,28 @@ products = Table("product", meta,
         Column("id", String(36), primary_key=True),
         Column("user_id", String(36), ForeignKey("user.id"), nullable=False),
         Column("name", String(45), nullable=False),
-        Column("description", String(320), nullable=False),
-        Column("price", Float, nullable=False),
-        Column("stock", Integer, nullable=False),
+        Column("description", String(1000), nullable=False),
+        Column("characteristics", String(1000), nullable=False),
+        Column("status", Boolean, nullable=False),
         Column("date_created", DateTime, nullable=False),
         Index('user_id_idx', 'user_id')
 )
 
 
-key_words = Table( "key_words", meta,
-        Column("id", Integer, primary_key=True),
-        Column("product_id", String(36), ForeignKey("product.id"), nullable=False),
-        Column("key_wordscol", String(45), nullable=False),
-        Index('id_idx', 'product_id')
+urls = Table("url", meta,
+    Column("id", String(36), primary_key=True),
+    Column("product_id", String(36), ForeignKey("product.id"), nullable=False),
+    Column("url", String(255), nullable=False),
+    Index('product_id_idx', 'product_id')
 )
 
-
-practica = Table(
-        Column("arrays", String(10000))
+materials = Table("material", meta,
+    Column("id", String(36), primary_key=True),
+    Column("product_id", String(36), ForeignKey("product.id"), nullable=False),
+    Column("material", String(45), nullable=False),
+    Index('product_id_idx', 'product_id')
 )
+
 
 meta.create_all(engine)
 

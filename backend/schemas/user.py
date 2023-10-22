@@ -28,8 +28,21 @@ class Product(BaseModel):
     user_id: Optional[str] = None
     name: str
     description: str
-    price: float
-    stock: int
+    characteristics: str
+    urls: list[str] 
+    materials: list[str] 
+    status: bool
     date_created: datetime
+
+
+class URL(BaseModel):
+    id: int
+    product_id: str
+    url: str
+
+class Material(BaseModel):
+    id: int
+    product_id: str
+    material: str
     
 

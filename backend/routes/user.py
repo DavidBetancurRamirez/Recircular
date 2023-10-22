@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from config.db import conn, session
 from models.user import users as user_table
-from schemas.user import User, ShippingAddress, Product
+from schemas.user import User, ShippingAddress, Product, URL, Material
 from datetime import datetime
 from sqlalchemy import select, text
 from passlib.context import CryptContext
@@ -25,18 +25,21 @@ def get_users():
     return conn.execute(user_table.select()).fetchall()
 
 
-# Mostrar un Usuario (Arreglar Internal Server Error)
+# Mostrar un Usuario
 @user.get(
     "/users/{username}",
     tags=["users"],
-    response_model=User,
     description="Get a single user by Username",
 )
 def get_user(username: str):
     try:
         consulta = text("SELECT * FROM user WHERE user.username = :username")
         user_return = session.execute(consulta, {"username" : username}).first()
-        return user_return
+        print(user_return)
+        if user_return is not None:
+            return user_return._asdict()
+        else:
+            return None
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
 
@@ -77,7 +80,7 @@ def log_in(username: str, password: str):
             stored_password = session.execute(consulta, {'username': username}).scalar()
             print(stored_password)
             if pwd_context.verify(password, stored_password):
-                return {"message": "Login successful", "uuid": user_id}
+                return {"uuid": user_id}
         return {"message": "Login unsuccessful"}
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
@@ -96,10 +99,10 @@ def update_user(u: User, id: str):
         valores = {"username": u.username, "email": u.email, "phone": u.phone, "date_updated": datetime.now(), "id": id}
         session.execute(consulta, valores)
         session.commit()
-        return 'Completed'
+        return {"message": "Completed"}
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
-        return 'Non Completed'
+        return {"message": "Non Completed"}
     finally:
         session.close()  
 
@@ -113,7 +116,7 @@ def update_user(u: User, id: str):
 '''
 
 
-# Agregar dirección de envío (Clave foraneas)
+# Agregar dirección de envío
 @user.post(
     "/users/shippingaddress", tags=["users"], description="Add a Shipping Address"
 )
@@ -138,6 +141,27 @@ def add_shipping_address(id: str, s: ShippingAddress):
     finally:
         session.close()
         
+        
+# Modificar Dirección de Envío
+@user.put("/users/shippingaddress/{id}", tags=["users"])
+def update_shipping_address(id: str, s: ShippingAddress):
+    try:
+        consulta_id = text("SELECT ShippingAddress_id FROM user WHERE user.id = :id")
+        new_id = session.execute(consulta_id, {"id" : id}).first()[0]
+        
+        consulta = text("UPDATE shipping_address SET shipping_address.country = :country, shipping_address.city = :city, shipping_address.province = :province, shipping_address.address = :address, shipping_address.description = :description, shipping_address.postal_code = :postal_code WHERE shipping_address.id = :new_id")
+        valores = {"country": s.country, "city": s.city, "province": s.province, "address": s.address, "description" : s.description, "postal_code" : s.postal_code, "new_id" : new_id}
+        
+        session.execute(consulta, valores)
+        session.commit() 
+        
+        return {"message" : "Completed"} 
+    except Exception as e:
+        print(f"Error al insertar en la base de datos: {e}")
+        return {"message" : "Non Completed"}
+    finally:
+        session.close()
+
 
 # Agregar Producto
 @user.post(
@@ -146,22 +170,47 @@ def add_shipping_address(id: str, s: ShippingAddress):
 def add_product(id: str, p: Product):
     try:
         new_id = str(uuid.uuid4())
-        consulta = text('INSERT INTO product VALUES (:id, :user_id, :name, :description, :price, :stock, :date_created);')
-        valores = {"id": new_id, "user_id": id, "name": p.name, "description": p.description, "price": p.price, "stock": p.stock, "date_created": datetime.now()}
+        consulta = text('INSERT INTO product VALUES (:id, :user_id, :name, :description, :characteristics, :status, :date_created);')
+        valores = {"id": new_id, "user_id": id, "name": p.name, "description": p.description, "characteristics": p.characteristics, "status": True, "date_created": datetime.now()}
         session.execute(consulta, valores)
+        
+        print(p.urls)
+        
+        for url in p.urls:
+            url_id = str(uuid.uuid4())
+            consulta_url = text('INSERT INTO url (id, product_id, url) VALUES (:id, :product_id, :url);')
+            valores_url = {"id": url_id, "product_id": new_id, "url": url}
+            session.execute(consulta_url, valores_url)
+            
+        for material in p.materials:
+            material_id = str(uuid.uuid4())
+            consulta_material = text('INSERT INTO material (id, product_id, material) VALUES (:id, :product_id, :material);')
+            valores_material = {"id": material_id, "product_id": new_id, "material": material}
+            session.execute(consulta_material, valores_material)
+        
         session.commit()
         return {"message": "Product Created", "uuid": new_id}
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
         return {"message" : "Product not created"}
         
+
 '''
-    "name": "Aserrin",
-    "description": "Conjunto de partículas que se desprenden de la madera cuando se sierra",
-    "price": 30000,
-    "stock": 50,
-    "date_created": "2023-10-18T21:12:01.461Z"
+     {
+  "name": "Aserrin",
+  "description": "Somos una empresa que trabaja con madera y nos sobra gran cantidad de aserrín de nuestra producción",
+  "characteristics": "Características\n - Varios tipos de madera\n- 100% madera seca\n- Textura lisa",
+  "urls": [
+    "https://www.youtube.com/watch?v=iDZA-cps21o&ab_channel=DataCamp", "https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"
+  ],
+  "materials": [
+    "Acero", "Algodon", "Aluminio", "Arcilla"
+  ],
+  "status": true,
+  "date_created": "2023-10-22T14:18:01.403Z"
+}
 '''
+
 
 # Mostrar productos del usuario
 @user.get(
@@ -173,7 +222,8 @@ def get_products_user(username: str):
     try:
         consulta_id = text("SELECT id FROM user WHERE user.username = :username")
         id = session.execute(consulta_id, {"username" : username}).first()[0]
-        consulta = text("SELECT * FROM product WHERE product.user_id = :user_id")
+        
+        consulta = text("SELECT p.*, m.material, u.url FROM product p LEFT JOIN material m ON p.id = m.product_id LEFT JOIN url u ON p.id = u.product_id WHERE p.user_id = :user_id")
         results = session.execute(consulta, {"user_id" : id}).fetchall()
         
         return [Product(
@@ -181,7 +231,7 @@ def get_products_user(username: str):
                 user_id=row[1], 
                 name=row[2], 
                 description=row[3], 
-                price=row[4], 
+                characteristics=row[4], 
                 stock=row[5], 
                 date_created=row[6]
             ) for row in results]
@@ -194,10 +244,28 @@ def get_products_user(username: str):
 # Mostrar producto
 @user.get(
     "/product/{id}",
-    tags=["product"],
+    tags=["products"],
     description="Get one Product"
 )
 def get_product(id: str):
-    consulta = text("SELECT * FROM product WHERE product.id = :id;")
-    return session.execute(consulta, {"id" : id})
-
+    try:
+        consulta = text("SELECT * FROM product WHERE product.id = :id;")
+        results = session.execute(consulta, {"id" : id}).fetchall()
+        
+        print(results)
+        
+        return results
+    # Si retorno este arreglo no lanza problema
+        # return [Product(
+        #         id=row[0], 
+        #         user_id=row[1], 
+        #         name=row[2], 
+        #         description=row[3], 
+        #         price=row[4], 
+        #         stock=row[5], 
+        #         date_created=row[6]
+        #     ) for row in results]
+    except Exception as e:
+        print(f"Error al insertar en la base de datos: {e}")
+    finally:
+        session.close()
