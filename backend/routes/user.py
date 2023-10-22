@@ -96,21 +96,14 @@ def log_in(u : User):
 
 # Modificación del perfil
 @user.put(
-    "/update_profile/{id}", tags=["users"], description="Update a User by Id"
+    "/update_profile", tags=["users"], description="Update a User by Id"
 )
 def update_user(u: User):
     try:
-        if (u.password.__len__() == 36):
-            consulta = text('UPDATE user SET user.username = :username, user.phone = :phone, user.date_updated = :date_updated, user.address = :address WHERE user.id = :id;')
-            valores = {"username": u.username, "phone": u.phone, "date_updated": datetime.now(), "address" : u.address, "id": u.id}
-            session.execute(consulta, valores)
-            session.commit()
-        else:
-            encripted_password = pwd_context.hash(u.password)
-            consulta = text('UPDATE user SET user.username = :username, user.password = :password, user.phone = :phone, user.date_updated = :date_updated, user.address = :address WHERE user.id = :id;')
-            valores = {"username": u.username, "password" : encripted_password , "phone": u.phone, "date_updated": datetime.now(), "address" : u.address, "id": u.id}
-            session.execute(consulta, valores)
-            session.commit()
+        consulta = text('UPDATE user SET user.username = :username, user.phone = :phone, user.date_updated = :date_updated, user.address = :address WHERE user.id = :id;')
+        valores = {"username": u.username, "phone": u.phone, "date_updated": datetime.now(), "address" : u.address, "id": u.id}
+        session.execute(consulta, valores)
+        session.commit()
         
         consulta = text("SELECT * FROM user WHERE user.id = :id")
         return session.execute(consulta, {"id" : u.id}).first()._asdict()

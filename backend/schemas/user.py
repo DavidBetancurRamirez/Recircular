@@ -6,7 +6,7 @@ class User(BaseModel):
     id: Optional[str] = None
     username: str
     email: Optional[str] = None
-    password: str
+    password: Optional[str] = None
     status: Optional[bool] = None
     phone: Optional[str] = None
     ShippingAddress_id: Optional[int] = None

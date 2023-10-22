@@ -1,10 +1,10 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "./Layout";
 import styled from "styled-components";
 import colores from "../styles/colores";
 import AgregarImgP from "../elements/AgregarImgP";
 import { ContenedorSombra, Formulario, Input, Tercio } from "../styles/varios";
+import { useUser } from "../context/userContext"
 
 const ContenedorInput = styled.div`
     margin: 5px 0;
@@ -37,10 +37,42 @@ const ContenedorBotones = styled.div`
 const Perfil = () => {
     const [imagenes, cambiarImagenes] = useState([])
 
-    const [nombre, cambiarNombre] = useState("");
     const [password, cambiarPassword] = useState("");
+    const [nombre, cambiarNombre] = useState("");
     const [telefono, cambiarTelefono] = useState("");
     const [direccion, cambiarDireccion] = useState("");
+
+    const { user, deleteUser, editUser } = useUser();
+
+    useEffect(() => {
+        if (user) {
+            cambiarNombre(user.username)
+            cambiarTelefono(user.phone)
+            cambiarDireccion(user.address)
+        }
+    }, [user])
+    
+    const handleActualizar = async () => {
+        try {
+            const response = await editUser({
+                username: nombre,
+                phone: telefono,
+                address: direccion,
+            })
+            console.log(response)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const handleEliminar = async () => {
+        try {
+            const response = await deleteUser(user.id)
+            console.log(response)
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
       <Layout>
@@ -49,15 +81,26 @@ const Perfil = () => {
           <Tercio>
             <AgregarImgP imagenes={imagenes} cambiarImagenes={cambiarImagenes} />
             <div>
-                <Formulario>
+                <Formulario onSubmit={(e) => e.preventDefault()}>
                     <ContenedorInput>
                         <h3>Correo</h3>
-                        <Input
-                            required 
+                        <Input 
                             name = "Correo"
                             type="email"
                             placeholder="Correo Electronico"
-                            value={"correo@correo.com"}
+                            value={user?.email}
+                            disabled
+                        />
+                    </ContenedorInput>
+
+                    <ContenedorInput>
+                        <h3>Contraseña</h3>
+                        <Input
+                            name = "Contrasena"
+                            type="password"
+                            placeholder="****************"
+                            value={password}
+                            onChange={(e) => cambiarPassword(e.target.value)}
                             disabled
                         />
                     </ContenedorInput>
@@ -65,7 +108,6 @@ const Perfil = () => {
                     <ContenedorInput>
                         <h3>Nombre</h3>
                         <Input
-                            required 
                             name = "Nombre"
                             type="text"
                             placeholder="Nombre de Usuario"
@@ -75,21 +117,8 @@ const Perfil = () => {
                     </ContenedorInput>
 
                     <ContenedorInput>
-                        <h3>Contraseña</h3>
-                        <Input
-                            required 
-                            name = "Contrasena"
-                            type="password"
-                            placeholder="Contraseña"
-                            value={password}
-                            onChange={(e) => cambiarPassword(e.target.value)}
-                        />
-                    </ContenedorInput>
-
-                    <ContenedorInput>
                         <h3>Telefono</h3>
                         <Input
-                            required 
                             name = "telefono"
                             type="text"
                             placeholder="Telefono"
@@ -101,7 +130,6 @@ const Perfil = () => {
                     <ContenedorInput>
                         <h3>Dirrección</h3>
                         <Input
-                            required 
                             name = "direccion"
                             type="text"
                             placeholder="direccion"
@@ -111,8 +139,8 @@ const Perfil = () => {
                     </ContenedorInput>
 
                     <ContenedorBotones>
-                        <button className="actualizar" >Actualizar</button>
-                        <button>Eliminar</button>
+                        <button className="actualizar" onClick={handleActualizar} >Actualizar</button>
+                        <button onClick={handleActualizar}>Eliminar</button>
                     </ContenedorBotones>
 
                 </Formulario>

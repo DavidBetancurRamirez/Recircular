@@ -37,15 +37,9 @@ export const UserContextProvider = (props) => {
         }
     }
     
-    const deleteUser = async (buscar) => {
+    const deleteUser = async (id) => {
         try {
-            // Buscar usuario en bd
-            const usuario = await getUser(buscar);
-            if (!usuario) return "El usuario no existe";
-    
-            // Inactivar usuario
-            usuario.activo = false;
-            await editUser(usuario);
+            const response = await axios.put(API_BASE_URL + "/delete/" + id);
             return true;
         } catch (error) {
             return false;
@@ -53,7 +47,12 @@ export const UserContextProvider = (props) => {
     }
     
     const editUser = async (usuario) => {
-        
+        try {
+            const response = await axios.put(API_BASE_URL + "/update_profile", usuario);
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
 
     const getUser = async (buscar) => {
@@ -74,8 +73,8 @@ export const UserContextProvider = (props) => {
                             { username, password });
             
             console.log(usuario)
-            setUser(usuario);
-            return usuario;
+            setUser(usuario.data);
+            return usuario.data;
         } catch (error) {
             throw new Error("Intentelo más tarde");
         }
