@@ -2,30 +2,27 @@ import styled from "styled-components";
 import colores from "./colores";
 
 
-export const ContenedorPrincipal = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    margin: 20px auto;
-    width: 90%;
-    max-width: 1000px;
-`
 export const ContenedorSombra = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 90%;
+    max-width: 1000px;
     border-radius: 20px;
-    margin: 20px 0;
+    margin: 40px auto;
     padding: 10px 20px;
     background: linear-gradient(315deg, #ffffff, ${colores.gris});
-    box-shadow:  -5px -5px 10px #cecece,
+    box-shadow: -5px -5px 10px #cecece,
                 10px 10px 10px #ffffff;
 
     h2 {
         width: 100%;
         text-align: center;
-        font-size: 20px;
+        font-size: 1.4rem;
         margin-bottom: 20px;
+    }
+
+    @media (max-width: 800px) {
+        margin: 20px auto;
     }
 `
 
@@ -35,7 +32,7 @@ export const Formulario = styled.form`
 
     h3 {
         font-weight: 700;
-        font-size: 15px;
+        font-size: 1.1rem;
         margin-right: 10px;
     }
 `
@@ -49,7 +46,6 @@ export const Input = styled.input`
     padding: 10px;
     width: 100%;
     height: 100%;
-    font-size: 14px;
 `
 
 export const InputFlexible = styled.textarea`
@@ -62,13 +58,12 @@ export const InputFlexible = styled.textarea`
     border-radius: 10px;
     border: 1px solid #fff;
     padding: 10px;
-    font-size: 14px;
     margin-top: 5px;
 `;
 
 export const ContenedorScroll = styled.article`
     display: flex;
-    width: 90%;
+    width: ${props => (props.size=="full" ? "100%" : "90%")};
     white-space: nowrap;
     overflow-x: auto;
 
@@ -80,6 +75,7 @@ export const ContenedorScroll = styled.article`
 export const Mitad = styled.div`
     display: flex;
     margin-bottom: 20px;
+    width: 100%;
 
     > div { width: 50%; }
 

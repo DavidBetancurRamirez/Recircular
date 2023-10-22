@@ -8,7 +8,11 @@ const Contenedor = styled.div`
     > div {
         display: flex;
         align-items: center;
-        font-size: 12px;
+    }
+
+    .comentario { 
+        font-size: 0.9rem;
+        font-weight: lighter;
     }
 
     @media (max-width: 800px) { margin-top: 20px; }
@@ -25,7 +29,7 @@ const ContenedorImagen = styled.div`
     margin-right: 5px;
     
     p {
-        font-size: 10px;
+        font-size: 0.8rem;
         min-width: 100px;
         margin-right: 10px;
     }
@@ -42,14 +46,18 @@ const AgregarImg = styled.label`
     padding: 5px 10px;
     background-color: ${colores.azulOscuro};
     color: #fff;
-    font-size: 12px;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: 0.5s all ease;
     white-space: nowrap;
     margin-right: 10px;
     transition: 0.5s all ease;
+    display: grid;
+    place-items: center;
 
     &:hover { color: ${colores.azulClaro} }
+
+    input { display: none; }
 `
 
 const Imagenes = ({ imagenes, cambiarImagenes }) => {
@@ -72,12 +80,11 @@ const Imagenes = ({ imagenes, cambiarImagenes }) => {
                         type="file" 
                         multiple 
                         accept="image/*" 
-                        onChange={handleImgSelec} 
-                        style={{ display: "none" }}
+                        onChange={handleImgSelec}
                     />
                     Agregar imagen
                 </AgregarImg>
-                <p>Recomendamos imágenes cuadradas</p>
+                <p className='comentario'>Recomendamos imágenes cuadradas</p>
             </div>
             <ContenedorScroll>
                 {imagenes.map((imagen, index) => {
