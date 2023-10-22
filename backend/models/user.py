@@ -13,6 +13,7 @@ users = Table("user", meta,
              Column("password", String(360), nullable=False), 
              Column("phone", String(16)), 
              Column("ShippingAddress_id", Integer, ForeignKey('shipping_address.id')), 
+             Column("status", Boolean, nullable=False),
              Column("date_created", DateTime, nullable=False), 
              Column("date_updated", DateTime), 
              UniqueConstraint('username', name='username_UNIQUE'), 
@@ -36,7 +37,6 @@ products = Table("product", meta,
         Column("user_id", String(36), ForeignKey("user.id"), nullable=False),
         Column("name", String(45), nullable=False),
         Column("description", String(1000), nullable=False),
-        Column("characteristics", String(1000), nullable=False),
         Column("status", Boolean, nullable=False),
         Column("date_created", DateTime, nullable=False),
         Index('user_id_idx', 'user_id')
@@ -56,6 +56,13 @@ materials = Table("material", meta,
     Column("material", String(45), nullable=False),
     Index('product_id_idx', 'product_id')
 )
+
+characteristics = Table("characteristic", meta,
+    Column("id", String(36), primary_key=True),
+    Column("product_id", String(36), ForeignKey("product.id"), nullable=False),
+    Column("characteristic", String(45), nullable=False),
+    Index('product_id_idx', 'product_id'))
+    
 
 
 meta.create_all(engine)

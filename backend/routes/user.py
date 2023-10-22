@@ -50,8 +50,8 @@ def sign_up(u: User):
         new_id = str(uuid.uuid4())
         encripted_password = pwd_context.hash(u.password)
         
-        consulta = text('INSERT INTO user VALUES (:uuid, :username, :email, :password, null, null, :date_created, :date_updated);')
-        valores = {"uuid": new_id, "username": u.username, "email": u.email, "password": encripted_password, "date_created": datetime.now(), "date_updated" : datetime.now()}
+        consulta = text('INSERT INTO user VALUES (:uuid, :username, :email, :password, null, null, :status, :date_created, :date_updated, null);')
+        valores = {"uuid": new_id, "username": u.username, "email": u.email, "password": encripted_password, "status" : True, "date_created": datetime.now(), "date_updated" : datetime.now()}
         
         session.execute(consulta, valores)      
         session.commit()
@@ -96,18 +96,27 @@ def log_in(u : User):
 
 # Modificación del perfil
 @user.put(
-    "/users/{id}", tags=["users"], description="Update a User by Id"
+    "/update_profile/{id}", tags=["users"], description="Update a User by Id"
 )
-def update_user(u: User, id: str):
+def update_user(u: User):
     try:
-        consulta = text('UPDATE user SET user.username = :username, user.email = :email, user.phone = :phone, user.date_updated = :date_updated WHERE user.id = :id;')
-        valores = {"username": u.username, "email": u.email, "phone": u.phone, "date_updated": datetime.now(), "id": id}
-        session.execute(consulta, valores)
-        session.commit()
-        return {"message": "Completed"}
+        if (u.password.__len__() == 36):
+            consulta = text('UPDATE user SET user.username = :username, user.phone = :phone, user.date_updated = :date_updated, user.address = :address WHERE user.id = :id;')
+            valores = {"username": u.username, "phone": u.phone, "date_updated": datetime.now(), "address" : u.address, "id": u.id}
+            session.execute(consulta, valores)
+            session.commit()
+        else:
+            encripted_password = pwd_context.hash(u.password)
+            consulta = text('UPDATE user SET user.username = :username, user.password = :password, user.phone = :phone, user.date_updated = :date_updated, user.address = :address WHERE user.id = :id;')
+            valores = {"username": u.username, "password" : encripted_password , "phone": u.phone, "date_updated": datetime.now(), "address" : u.address, "id": u.id}
+            session.execute(consulta, valores)
+            session.commit()
+        
+        consulta = text("SELECT * FROM user WHERE user.id = :id")
+        return session.execute(consulta, {"id" : u.id}).first()._asdict()
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
-        return {"message": "Non Completed"}
+        return None
     finally:
         session.close()  
 
@@ -119,6 +128,24 @@ def update_user(u: User, id: str):
    "description": "Urbanización Prestige, Apto. 803",
    "postal_code": "044550"
 '''
+
+
+# Eliminar Usuario
+@user.put(
+    "/delete/{id}", tags=["users"]
+)
+def delete_user(id: str):
+    try:
+        consulta = text("UPDATE user SET user.status = :status WHERE user.id = :id")
+        session.execute(consulta, {"status" : False, "id" : id})
+        session.commit()
+        
+        return True
+    except Exception as e:
+        print(f"Error al insertar en la base de datos: {e}")
+        return None
+    finally:
+        session.close()
 
 
 # Agregar dirección de envío
@@ -170,13 +197,13 @@ def update_shipping_address(id: str, s: ShippingAddress):
 
 # Agregar Producto
 @user.post(
-    "/users/create_product", tags=["users"], description="Add a Product"
+    "/create_product", tags=["users"], description="Add a Product"
 )
 def add_product(id: str, p: Product):
     try:
         new_id = str(uuid.uuid4())
-        consulta = text('INSERT INTO product VALUES (:id, :user_id, :name, :description, :characteristics, :status, :date_created);')
-        valores = {"id": new_id, "user_id": id, "name": p.name, "description": p.description, "characteristics": p.characteristics, "status": True, "date_created": datetime.now()}
+        consulta = text('INSERT INTO product VALUES (:id, :user_id, :name, :description, :status, :date_created);')
+        valores = {"id": new_id, "user_id": id, "name": p.name, "description": p.description, "status": True, "date_created": datetime.now()}
         session.execute(consulta, valores)
         
         print(p.urls)
@@ -192,6 +219,12 @@ def add_product(id: str, p: Product):
             consulta_material = text('INSERT INTO material (id, product_id, material) VALUES (:id, :product_id, :material);')
             valores_material = {"id": material_id, "product_id": new_id, "material": material}
             session.execute(consulta_material, valores_material)
+        
+        for charact in p.characteristics:
+            charac_id = str(uuid.uuid4())
+            consulta_characteristic = text('INSERT INTO material (id, product_id, characteristic) VALUES (:id, :product_id, :characteristic);')
+            valores_characteristic = {"id": charac_id, "product_id": new_id, "characteristic": charact}
+            session.execute(consulta_characteristic, valores_characteristic)
         
         session.commit()
         return {"message": "Product Created", "uuid": new_id}
