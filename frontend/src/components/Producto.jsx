@@ -2,11 +2,11 @@ import Layout from "./Layout";
 import ImgProducto from "../elements/ImgProducto";
 import InfoContacto from "../elements/InfoContacto";
 import Material from "../elements/Material";
+import BtnAgregar from "../elements/BtnAgregar";
 
 import styled from "styled-components";
 import colores from "../styles/colores";
 import { ContenedorScroll, ContenedorSombra, Mitad } from "../styles/varios";
-import { GiShoppingCart } from "react-icons/gi"
 
 const Contenedor = styled.div`
     padding: 10px;
@@ -38,28 +38,6 @@ const ContCaracteristicas = styled.div`
         position: absolute;
         left: -15px;
         top: 0;
-    }
-`
-const BotonAgregar = styled.button`
-    height: 40px;
-    width: 120px;
-    border: none;
-    border-radius: 20px;
-    background-color: ${colores.azulOscuro};
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    margin: 20px auto;
-    cursor: pointer;
-    transition: 0.5s all ease;
-
-    &:hover { color: ${colores.azulClaro}; }
-
-    svg {
-        width: 20px;
-        height: 20px;
     }
 `
 
@@ -96,11 +74,11 @@ const Producto = () => {
                 <Mitad>
                     <Contenedor>
                         <ImgProducto />
-                        <BotonAgregar>Agregar<GiShoppingCart /></BotonAgregar>
+                        <BtnAgregar />
                         <InfoContacto />
                     </Contenedor>
                     <Contenedor>
-                        <ContenedorScroll style={{ width: "100%" }}>
+                        <ContenedorScroll size="full">
                             {materiales.map((material, index) => {
                                 return (
                                     <div key={index}>
