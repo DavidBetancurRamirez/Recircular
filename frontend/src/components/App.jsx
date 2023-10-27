@@ -1,5 +1,5 @@
-import Layout from "./components/Layout"
-import GridBox from "./elements/GridBox"
+import Layout from "./Layout"
+import GridBox from "../elements/GridBox"
 
 
 const App = () => {
