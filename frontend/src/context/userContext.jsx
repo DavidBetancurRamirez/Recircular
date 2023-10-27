@@ -16,21 +16,27 @@ export const useUser = () => {
 export const UserContextProvider = (props) => {
     const [user, setUser] = useState(null);
 
+    const actualizarStorage = (usuario) => {
+        localStorage.setItem("userData", usuario.id);
+        setUser(usuario?.usuario);
+    }
+
     const signUp = async ({ username, email, password }) => {
         try {
             if (!validarEmail(email)) return "Email no valido";
             if (!validarPassword(password)) return "La contraseña no es valida";
 
-            // Crear nuevo usuario
-            const usuario = {
+            const response = await axios.post(API_BASE_URL + "/signup", {
                 username,
                 email,
                 password
-            };
-            // SI es null es que usuario o contraseña ya existen
-            const response = await axios.post(API_BASE_URL + "/signup", usuario);
-            
-            setUser(usuario);
+            });
+
+            if (response==null)  return "Nombre de usuario existente";
+
+            const usuario = response.usuario;
+            actualizarStorage(usuario.id);
+
             return usuario;
         } catch (error) {
             throw new Error("Intentelo más tarde");         
@@ -40,18 +46,21 @@ export const UserContextProvider = (props) => {
     const deleteUser = async (id) => {
         try {
             const response = await axios.put(API_BASE_URL + "/delete/" + id);
-            return true;
+            return response ? "Se elimino correctamente" : "Ocurrio un error, intentelo más tarde";
         } catch (error) {
-            return false;
+            console.error(error)
+            return null;
         }
     }
     
     const editUser = async (usuario) => {
         try {
             const response = await axios.put(API_BASE_URL + "/update_profile", usuario);
-            return true;
+            actualizarStorage(response)
+            return response;
         } catch (error) {
-            return false;
+            console.error(error)
+            return null;
         }
     }
 
@@ -61,20 +70,27 @@ export const UserContextProvider = (props) => {
             const response = await axios.get(`${API_BASE_URL}/users/${buscar}`);
             return response?.data;
         } catch (error) {
-            return null
+            console.error(error)
+            return false
         }
     }
     
     const login = async ({ username, password }) => {
         try {
+            if (!validarPassword(password)) return "La contraseña no es valida";
+
             // SI ES NULL NO SE PUEDE
-            const usuario = await axios.post(
-                            `${API_BASE_URL}/login`,
-                            { username, password });
+            const response = await axios.post(
+                                `${API_BASE_URL}/login`,
+                                { username, password }
+            );
             
-            console.log(usuario)
-            setUser(usuario.data);
-            return usuario.data;
+            if (response==null)  return "Usuario o contraseña incorrectos";
+
+            const usuario = response.usuario;
+            actualizarStorage(usuario.id);
+
+            return usuario;
         } catch (error) {
             throw new Error("Intentelo más tarde");
         }
