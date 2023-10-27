@@ -6,11 +6,13 @@ class User(BaseModel):
     id: Optional[str] = None
     username: str
     email: Optional[str] = None
-    password: str
+    password: Optional[str] = None
+    status: Optional[bool] = None
     phone: Optional[str] = None
     ShippingAddress_id: Optional[int] = None
     date_created: Optional[datetime] = None
     date_updated: Optional[datetime] = None
+    address: Optional[str] = None
     
 
 class ShippingAddress(BaseModel):
@@ -28,7 +30,7 @@ class Product(BaseModel):
     user_id: Optional[str] = None
     name: str
     description: str
-    characteristics: str
+    characteristics: list[str]
     urls: list[str] 
     materials: list[str] 
     status: bool
@@ -45,4 +47,7 @@ class Material(BaseModel):
     product_id: str
     material: str
     
+
+
+        
 
