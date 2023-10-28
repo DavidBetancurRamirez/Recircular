@@ -230,7 +230,7 @@ def add_product(id: str, p: Product):
      {
   "name": "Aserrin",
   "description": "Somos una empresa que trabaja con madera y nos sobra gran cantidad de aserrín de nuestra producción",
-  "characteristics": "Características\n - Varios tipos de madera\n- 100% madera seca\n- Textura lisa",
+  "characteristics": ["Varios tipos de madera", "100% madera seca", "Textura lisa"],
   "urls": [
     "https://www.youtube.com/watch?v=iDZA-cps21o&ab_channel=DataCamp", "https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"
   ],
