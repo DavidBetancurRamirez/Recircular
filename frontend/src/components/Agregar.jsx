@@ -7,6 +7,7 @@ import Caracteristicas from "../elements/Caracteristicas";
 import styled from "styled-components";
 import colores from "../styles/colores";
 import { ContenedorSombra, Formulario, Input, InputFlexible, Mitad } from "../styles/varios";
+import { useUser, UserContextProvider } from "../context/userContext"
 
 const ContenedorInput = styled.div`
     display: flex;
@@ -40,6 +41,22 @@ const Agregar = () => {
     const [descripcion, cambiarDescripcion] = useState("");
     const [caracteristicas, cambiarCaracteristicas] = useState([""]);
 
+    const { user, addProduct, getStorage } = useUser();
+
+    const handleAgregar = async () => {
+        try {
+            console.log(getStorage())
+            const response = await addProduct(getStorage(), {
+                username: nombre,
+                description: descripcion,
+                characteristics: caracteristicas,
+                urls: urls,
+                materials: materiales
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
         <Layout>

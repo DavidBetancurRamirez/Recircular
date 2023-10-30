@@ -4,7 +4,7 @@ import styled from "styled-components";
 import colores from "../styles/colores";
 import AgregarImgP from "../elements/AgregarImgP";
 import { ContenedorSombra, Formulario, Input, Tercio } from "../styles/varios";
-import { useUser } from "../context/userContext"
+import { useUser, UserContextProvider } from "../context/userContext"
 
 const ContenedorInput = styled.div`
     margin: 5px 0;
@@ -42,7 +42,7 @@ const Perfil = () => {
     const [telefono, cambiarTelefono] = useState("");
     const [direccion, cambiarDireccion] = useState("");
 
-    const { user, deleteUser, editUser } = useUser();
+    const { user, getUser, deleteUser, editUser, getStorage } = useUser();
 
     useEffect(() => {
         if (user) {
@@ -54,12 +54,13 @@ const Perfil = () => {
     
     const handleActualizar = async () => {
         try {
+            console.log(getStorage())
             const response = await editUser({
+                id: getStorage(),
                 username: nombre,
                 phone: telefono,
-                address: direccion,
+                address: direccion
             })
-            console.log(response)
         } catch (error) {
             console.error(error)
         }
@@ -67,7 +68,9 @@ const Perfil = () => {
 
     const handleEliminar = async () => {
         try {
-            const response = await deleteUser(user.id)
+            const id = getStorage()
+            console.log(id)
+            const response = await deleteUser(id)
             console.log(response)
         } catch (error) {
             console.error(error)
@@ -140,7 +143,7 @@ const Perfil = () => {
 
                     <ContenedorBotones>
                         <button className="actualizar" onClick={handleActualizar} >Actualizar</button>
-                        <button onClick={handleActualizar}>Eliminar</button>
+                        <button onClick={handleEliminar}>Eliminar</button>
                     </ContenedorBotones>
 
                 </Formulario>

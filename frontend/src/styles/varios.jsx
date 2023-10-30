@@ -10,7 +10,7 @@ export const ContenedorSombra = styled.div`
     border-radius: 20px;
     margin: 40px auto;
     padding: 10px 20px;
-    background: linear-gradient(315deg, #ffffff, ${colores.gris});
+    background: linear-gradient(315deg, #ffffff, ${colores.grisClaro});
     box-shadow: -5px -5px 10px #cecece,
                 10px 10px 10px #ffffff;
 

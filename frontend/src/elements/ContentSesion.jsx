@@ -79,7 +79,7 @@ const ContentSesion = ({ inLogin }) => {
     const [password, cambiarPassword] = useState("");
 
     // Contexto del usuario
-    const { signUp, login, getUser } = useUser();
+    const { signUp, login } = useUser();
 
     // Contexto de mensaje
     const { newMessage } = useMessage();
@@ -106,25 +106,25 @@ const ContentSesion = ({ inLogin }) => {
         try {
             if (inLogin) {
                 // ** Pestaña de login ** //
-                
-                respuesta = await login({ username, password });
+                respuesta = await login({ 
+                    username, 
+                    password
+                });
             } else {
                 // ** Pestaña de sign Up ** //
-
-                // Crear usuario
                 respuesta = await signUp({
                     username,
                     email,
                     password
                 });
-                
             }
+            console.log(respuesta)
+            if (typeof respuesta === 'string') newMessage(respuesta, "error");
+            else navigate("/")
         } catch (error) {
             console.log(error);
             newMessage("Intentelo más tarde", "error");
         }
-
-        navigate("/")
     }
 
     return (
