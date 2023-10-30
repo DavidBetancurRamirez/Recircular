@@ -20,28 +20,6 @@ export const UserContextProvider = (props) => {
         localStorage.setItem("userData", usuario.id);
         setUser(usuario?.usuario);
     }
-
-    const signUp = async ({ username, email, password }) => {
-        try {
-            if (!validarEmail(email)) return "Email no valido";
-            if (!validarPassword(password)) return "La contraseña no es valida";
-
-            const response = await axios.post(API_BASE_URL + "/signup", {
-                username,
-                email,
-                password
-            });
-
-            if (response==null)  return "Nombre de usuario existente";
-
-            const usuario = response.usuario;
-            actualizarStorage(usuario.id);
-
-            return usuario;
-        } catch (error) {
-            throw new Error("Intentelo más tarde");         
-        }
-    }
     
     const deleteUser = async (id) => {
         try {
@@ -61,6 +39,20 @@ export const UserContextProvider = (props) => {
         } catch (error) {
             console.error(error)
             return null;
+        }
+    }
+
+    const getStorage = async () => {
+        try {
+            const savedUserData = localStorage.getItem('userData');
+
+            if (savedUserData) {
+                const usuario = await getUser(savedUserData)
+                if (usuario) setUser(usuario)
+            }
+        } catch (error) {
+            console.error(error)
+            console.log("No se pudo recuperar la informacion, vuelva a loguearse")
         }
     }
 
@@ -96,16 +88,39 @@ export const UserContextProvider = (props) => {
         }
     }
 
+    const signUp = async ({ username, email, password }) => {
+        try {
+            if (!validarEmail(email)) return "Email no valido";
+            if (!validarPassword(password)) return "La contraseña no es valida";
+
+            const response = await axios.post(API_BASE_URL + "/signup", {
+                username,
+                email,
+                password
+            });
+
+            if (response==null)  return "Nombre de usuario existente";
+
+            const usuario = response.usuario;
+            actualizarStorage(usuario.id);
+
+            return usuario;
+        } catch (error) {
+            throw new Error("Intentelo más tarde");         
+        }
+    }
+
     return (
         <userContext.Provider
             value={{
                 user,
-                signUp,
                 deleteUser,
                 editUser,
                 getUser,
+                getStorage,
                 login,
-                setUser
+                setUser,
+                signUp,
             }}
         >
             {props.children}

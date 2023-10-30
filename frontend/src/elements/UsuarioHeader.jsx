@@ -1,3 +1,5 @@
+import { useUser } from "../context/userContext"
+
 import styled from "styled-components";
 import { GiShoppingCart } from "react-icons/gi"
 import { FaUserCircle } from "react-icons/fa";
@@ -35,10 +37,12 @@ const Usuario = styled.div`
 `
 
 const UsuarioHeader = () => {
+    const { user } = useUser();
+
     return (
         <ContenedorUsuario>
             <Usuario>
-                <p>Anonimus</p>
+                <p>{user ? user.name : "Anonymous"}</p>
                 <FaUserCircle />
             </Usuario>
             <GiShoppingCart />
