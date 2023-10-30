@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import Layout from "./Layout";
 import styled from "styled-components";
 import colores from "../styles/colores";
-import AgregarImgP from "../elements/AgregarImgP";
 import { ContenedorSombra, Formulario, Input, Tercio } from "../styles/varios";
 import { useUser } from "../context/userContext"
+import ImgDefect from "../images/usuario.png"
 
 const ContenedorInput = styled.div`
     margin: 5px 0;
@@ -32,10 +32,54 @@ const ContenedorBotones = styled.div`
         &:hover { background-color: ${colores.exito}; }
     }
 `
+const ContenedorImagen = styled.div`
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: auto;
+    cursor: pointer;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .mensaje {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.3s;
+        color: ${colores.azulClaro};
+        text-align: center;
+    }
+
+    &:hover {
+        img { opacity: 0.2;}
+        .mensaje { opacity: 1;}
+    }
+`
 
 
 const Perfil = () => {
-    const [imagenes, cambiarImagenes] = useState([])
+    const [imagen, cambiarImagen] = useState(null)
 
     const [password, cambiarPassword] = useState("");
     const [nombre, cambiarNombre] = useState("");
@@ -49,9 +93,10 @@ const Perfil = () => {
             cambiarNombre(user.username)
             cambiarTelefono(user.phone)
             cambiarDireccion(user.address)
+            cambiarImagen(user.img || ImgDefect)
         }
     }, [user])
-    
+
     const handleActualizar = async () => {
         try {
             const response = await editUser({
@@ -74,13 +119,29 @@ const Perfil = () => {
         }
     }
 
+    const handleImgSelec = (e) => {
+        const file = e.target.files[0];
+        if (file) cambiarImagen(URL.createObjectURL(file));
+    };
+
     return (
       <Layout>
         <ContenedorSombra>
           <h2>Mi perfil</h2>
           <Tercio>
-            <AgregarImgP imagenes={imagenes} cambiarImagenes={cambiarImagenes} />
-            <div>
+            <div className="primera">
+                <ContenedorImagen>
+                    <img src={imagen || ImgDefect} alt="Imagen de perfil" />
+                    <div className="mensaje">Cambiar imagen</div>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImgSelec}
+                    />
+                </ContenedorImagen>
+            </div>
+
+            <div className="segunda">
                 <Formulario onSubmit={(e) => e.preventDefault()}>
                     <ContenedorInput>
                         <h3>Correo</h3>
@@ -143,9 +204,8 @@ const Perfil = () => {
                         <button onClick={handleEliminar}>Eliminar</button>
                     </ContenedorBotones>
 
-                </Formulario>
-            </div>
-          
+                </Formulario>   
+            </div>       
           </Tercio>
         </ContenedorSombra>
       </Layout>
