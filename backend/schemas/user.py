@@ -47,7 +47,3 @@ class Material(BaseModel):
     product_id: str
     material: str
     
-
-
-        
-

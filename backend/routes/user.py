@@ -81,11 +81,14 @@ def log_in(u : User):
         consulta = text('SELECT id FROM user WHERE user.username = :username')
         user_id = session.execute(consulta, {'username': u.username}).scalar()
         if user_id:
-            consulta = text('SELECT password FROM user WHERE user.username = :username')
-            stored_password = session.execute(consulta, {'username': u.username}).scalar()
-            if pwd_context.verify(u.password, stored_password):
-                consulta = text("SELECT * FROM user WHERE user.id = :id")
-                return session.execute(consulta, {"id" : user_id}).first()._asdict()
+            consulta = text('SELECT status FROM user WHERE user.username = :username')
+            status = session.execute(consulta, {'username': u.username}).scalar()
+            if status:
+                consulta = text('SELECT password FROM user WHERE user.username = :username')
+                stored_password = session.execute(consulta, {'username': u.username}).scalar()
+                if pwd_context.verify(u.password, stored_password):
+                    consulta = text("SELECT * FROM user WHERE user.id = :id")
+                    return session.execute(consulta, {"id" : user_id}).first()._asdict()
         return None
     except Exception as e:
         print(f"Error al insertar en la base de datos: {e}")
@@ -362,7 +365,6 @@ def filter_products(materials: str):
         
         consulta = text("SELECT product_id FROM material WHERE material = :material")
         results = session.execute(consulta, {"material" : materials}).fetchall()
-        print(results)
         
         if results:
             products = {}
