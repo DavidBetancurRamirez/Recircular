@@ -15,10 +15,12 @@ export const useUser = () => {
 
 export const UserContextProvider = (props) => {
     const [user, setUser] = useState(null);
+    const [uuid, setUuid] = useState('');
 
     const actualizarStorage = (usuario) => {
         localStorage.setItem("userData", usuario.id);
         setUser(usuario?.usuario);
+        setUuid(usuario.id)
     }
 
     const signUp = async ({ username, email, password }) => {
@@ -36,6 +38,8 @@ export const UserContextProvider = (props) => {
 
             const usuario = response.data;
             actualizarStorage(usuario.id);
+
+            setUser(usuario)
 
             return usuario;
         } catch (error) {
@@ -57,10 +61,13 @@ export const UserContextProvider = (props) => {
 
     const editUser = async (usuario) => {
         try {
-            console.log(usuario)
+            console.log(uuid)
             const response = await axios.put(API_BASE_URL + "/update_profile", usuario);
             console.log(response)
             actualizarStorage(response.data)
+
+            setUser(response)
+
             return response;
         } catch (error) {
             console.error(error)
@@ -94,6 +101,8 @@ export const UserContextProvider = (props) => {
             const usuario = response.data;
             actualizarStorage(usuario);
 
+            setUser(usuario)
+
             return usuario;
         } catch (error) {
             console.log(error)
@@ -103,7 +112,9 @@ export const UserContextProvider = (props) => {
 
     const getStorage = async () => {
         try {
-            return localStorage.getItem("userData");
+            return_id = localStorage.getItem("userData");
+            setUuid(return_id)
+            return return_id
         } catch (error) {
             console.error(error)
             console.log("No se pudo recuperar la informacion, vuelva a loguearse")

@@ -54,9 +54,9 @@ const Perfil = () => {
     
     const handleActualizar = async () => {
         try {
-            console.log(getStorage())
+            // console.log(getStorage())
             const response = await editUser({
-                id: getStorage(),
+                id: user.id,
                 username: nombre,
                 phone: telefono,
                 address: direccion
@@ -68,10 +68,7 @@ const Perfil = () => {
 
     const handleEliminar = async () => {
         try {
-            const id = getStorage()
-            console.log(id)
-            const response = await deleteUser(id)
-            console.log(response)
+            const response = await deleteUser(user.id)
         } catch (error) {
             console.error(error)
         }

@@ -41,7 +41,7 @@ const UsuarioHeader = () => {
     return (
         <ContenedorUsuario>
             <Usuario>
-                <p>{user ? user.name : "Anonymous"}</p>
+                <p>{user ? user.username : "Anonymous"}</p>
                 <FaUserCircle />
             </Usuario>
             <GiShoppingCart />
