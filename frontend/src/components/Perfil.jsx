@@ -89,6 +89,7 @@ const Perfil = () => {
                 newMessage("Eliminacion exitosa", "exito")
                 // Clear localstorage
                 navigate("/")
+                
             }
         } catch (error) {
             console.error(error)
