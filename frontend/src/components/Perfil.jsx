@@ -5,6 +5,8 @@ import colores from "../styles/colores";
 import AgregarImgP from "../elements/AgregarImgP";
 import { ContenedorSombra, Formulario, Input, Tercio } from "../styles/varios";
 import { useUser, UserContextProvider } from "../context/userContext"
+import { useMessage } from "../context/messageContext";
+import { useNavigate } from "react-router-dom";
 
 const ContenedorInput = styled.div`
     margin: 5px 0;
@@ -37,30 +39,43 @@ const ContenedorBotones = styled.div`
 const Perfil = () => {
     const [imagenes, cambiarImagenes] = useState([])
 
+    const [email, cambiarEmail] = useState("")
     const [password, cambiarPassword] = useState("");
     const [nombre, cambiarNombre] = useState("");
     const [telefono, cambiarTelefono] = useState("");
     const [direccion, cambiarDireccion] = useState("");
 
-    const { user, getUser, deleteUser, editUser, getStorage } = useUser();
+    const { deleteUser, editUser } = useUser();
+    const { nombreUsuario, emailUsuario, phoneUsuario, addressUsuario } = useUser();
+
+    const { newMessage } = useMessage();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (user) {
-            cambiarNombre(user.username)
-            cambiarTelefono(user.phone)
-            cambiarDireccion(user.address)
-        }
-    }, [user])
+        if (emailUsuario)
+            cambiarEmail(emailUsuario)
+    })
     
     const handleActualizar = async () => {
         try {
-            // console.log(getStorage())
+            console.log(nombre)
+            if (nombre == "")
+                cambiarNombre(nombreUsuario)
+            if (telefono == "")
+                cambiarTelefono(phoneUsuario)
+            if (direccion == "")
+                cambiarDireccion(addressUsuario)
+            console.log(nombre)
+
             const response = await editUser({
-                id: user.id,
-                username: nombre,
+                username: "Loperatomas",
                 phone: telefono,
                 address: direccion
             })
+
+            if (typeof respuesta === 'string') newMessage(respuesta, "error");
+            else newMessage("Actualización exitosa", "exito")
         } catch (error) {
             console.error(error)
         }
@@ -68,7 +83,13 @@ const Perfil = () => {
 
     const handleEliminar = async () => {
         try {
-            const response = await deleteUser(user.id)
+            const response = await deleteUser()
+            if (typeof respuesta === 'string') newMessage(respuesta, "error");
+            else{
+                newMessage("Eliminacion exitosa", "exito")
+                // Clear localstorage
+                navigate("/")
+            }
         } catch (error) {
             console.error(error)
         }
@@ -88,7 +109,7 @@ const Perfil = () => {
                             name = "Correo"
                             type="email"
                             placeholder="Correo Electronico"
-                            value={user?.email}
+                            value={email}
                             disabled
                         />
                     </ContenedorInput>
@@ -98,7 +119,7 @@ const Perfil = () => {
                         <Input
                             name = "Contrasena"
                             type="password"
-                            placeholder="****************"
+                            placeholder="******************"
                             value={password}
                             onChange={(e) => cambiarPassword(e.target.value)}
                             disabled
@@ -110,8 +131,7 @@ const Perfil = () => {
                         <Input
                             name = "Nombre"
                             type="text"
-                            placeholder="Nombre de Usuario"
-                            value={nombre}
+                            placeholder={nombreUsuario}
                             onChange={(e) => cambiarNombre(e.target.value)}
                         />
                     </ContenedorInput>
@@ -121,8 +141,7 @@ const Perfil = () => {
                         <Input
                             name = "telefono"
                             type="text"
-                            placeholder="Telefono"
-                            value={telefono}
+                            placeholder={phoneUsuario != "" ? phoneUsuario : "Telefono"}
                             onChange={(e) => cambiarTelefono(e.target.value)}
                         />
                     </ContenedorInput>
@@ -130,16 +149,16 @@ const Perfil = () => {
                     <ContenedorInput>
                         <h3>Dirrección</h3>
                         <Input
-                            name = "direccion"
+                            name = "Direccion"
                             type="text"
-                            placeholder="direccion"
-                            value={direccion}
+                            placeholder={addressUsuario != "" ? addressUsuario : "Dirección"}
                             onChange={(e) => cambiarDireccion(e.target.value)}
                         />
                     </ContenedorInput>
 
                     <ContenedorBotones>
                         <button className="actualizar" onClick={handleActualizar} >Actualizar</button>
+                        <button onClick={() => navigate("/cambio")}>Cambiar Contraseña</button>
                         <button onClick={handleEliminar}>Eliminar</button>
                     </ContenedorBotones>
 

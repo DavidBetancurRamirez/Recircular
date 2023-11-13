@@ -31,19 +31,14 @@ class Product(BaseModel):
     name: str
     description: str
     characteristics: list[str]
-    urls: list[str] 
+    images: list[str] 
     materials: list[str] 
     status: bool
     date_created: datetime
 
 
-class URL(BaseModel):
-    id: int
-    product_id: str
-    url: str
-
-class Material(BaseModel):
-    id: int
-    product_id: str
-    material: str
+class Change(BaseModel):
+    email: str
+    old_password: str
+    new_password: str
     

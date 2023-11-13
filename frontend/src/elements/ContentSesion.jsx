@@ -77,6 +77,7 @@ const ContentSesion = ({ inLogin }) => {
     const [username, cambiarUsername] = useState("");
     const [email, cambiarEmail] = useState("");
     const [password, cambiarPassword] = useState("");
+    const [confirmPassword, confirmarPassword] = useState("");
 
     // Contexto del usuario
     const { signUp, login } = useUser();
@@ -115,7 +116,8 @@ const ContentSesion = ({ inLogin }) => {
                 respuesta = await signUp({
                     username,
                     email,
-                    password
+                    password,
+                    confirmPassword
                 });
             }
             console.log(respuesta)
@@ -166,6 +168,19 @@ const ContentSesion = ({ inLogin }) => {
                     />
                     <RiLockPasswordFill />
                 </ContInput>
+                {!inLogin &&
+                    <ContInput>
+                        <Input 
+                            required
+                            name = "password"
+                            type="password"
+                            placeholder="Confirmar Contraseña"
+                            value={confirmPassword}
+                            onChange={(e) => confirmarPassword(e.target.value)}
+                        />
+                        <RiLockPasswordFill />
+                    </ContInput>
+                }  
                 <Boton>{inLogin ? "Iniciar Sesión" : "Registrarse"}</Boton>
             </Formulario>
         </Contenedor>

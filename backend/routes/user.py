@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from config.db import conn, session
 from models.user import users as user_table
-from schemas.user import User, ShippingAddress, Product, URL, Material
+from schemas.user import User, ShippingAddress, Product, Change
 from datetime import datetime
 from sqlalchemy import select, text
 from passlib.context import CryptContext
@@ -50,7 +50,7 @@ def sign_up(u: User):
         new_id = str(uuid.uuid4())
         encripted_password = pwd_context.hash(u.password)
         
-        consulta = text('INSERT INTO user VALUES (:uuid, :username, :email, :password, null, null, :status, :date_created, :date_updated, null);')
+        consulta = text('INSERT INTO user VALUES (:uuid, :username, :email, :password, null, null, null,:status, :date_created, :date_updated);')
         valores = {"uuid": new_id, "username": u.username, "email": u.email, "password": encripted_password, "status" : True, "date_created": datetime.now(), "date_updated" : datetime.now()}
         
         session.execute(consulta, valores)      
@@ -143,6 +143,31 @@ def delete_user(id: str):
         return None
     finally:
         session.close()
+        
+
+# Cambio de Contraseña
+@user.put("/change_password", tags=["users"], description="Login")
+def change_password(c : Change):
+    try:
+        print(c.old_password)
+        print(c.new_password)
+        consulta = text('SELECT id FROM user WHERE user.email = :email')
+        user_id = session.execute(consulta, {"email": c.email}).scalar()
+        if user_id:
+            consulta = text('SELECT password FROM user WHERE user.email = :email')
+            stored_password = session.execute(consulta, {'email': c.email}).scalar()
+            if pwd_context.verify(c.old_password, stored_password):
+                consulta = text("UPDATE user SET user.password = :new_password")
+                session.execute(consulta, {"new_password" : pwd_context.hash(c.new_password)})
+                session.commit()
+                consulta = text("SELECT * FROM user WHERE user.id = :id")
+                return session.execute(consulta, {"id" : user_id}).first()._asdict()    
+        return None
+    except Exception as e:
+        print(f"Error al insertar en la base de datos: {e}")
+        return None
+    finally:
+        session.close()
 
 
 # Agregar dirección de envío
@@ -192,6 +217,19 @@ def update_shipping_address(id: str, s: ShippingAddress):
         session.close()
 
 
+# Convertir archivo a binario
+def convert_to_binary(filename):
+    with open(filename, 'rb') as f:
+        binarydata = f.read()
+    return binarydata
+
+
+# Convertir binario a archivo
+def convert_to_file(binarydata, filename):
+    with open(filename, 'wb') as f:
+        f.write(binarydata)
+
+
 # Agregar Producto
 @user.post(
     "/add_product", tags=["users"], description="Add a Product"
@@ -203,13 +241,11 @@ def add_product(id: str, p: Product):
         valores = {"id": new_id, "user_id": id, "name": p.name, "description": p.description, "status": True, "date_created": datetime.now()}
         session.execute(consulta, valores)
         
-        print(p.urls)
-        
-        for url in p.urls:
-            url_id = str(uuid.uuid4())
-            consulta_url = text('INSERT INTO url (id, product_id, url) VALUES (:id, :product_id, :url);')
-            valores_url = {"id": url_id, "product_id": new_id, "url": url}
-            session.execute(consulta_url, valores_url)
+        for img in p.images:
+            image_id = str(uuid.uuid4())
+            consulta_image = text('INSERT INTO image (id, product_id, image) VALUES (:id, :product_id, :image);')
+            valores_image = {"id": image_id, "product_id": new_id, "image": img}
+            session.execute(consulta_image, valores_image)
             
         for material in p.materials:
             material_id = str(uuid.uuid4())
@@ -268,9 +304,9 @@ def get_product(id: str):
                 "date_created": result[5],
             }
 
-            consulta_urls = text('SELECT * FROM url WHERE product_id = :product_id;')
-            valores_urls = {"product_id": id}
-            urls = [row.url for row in session.execute(consulta_urls, valores_urls)]
+            consulta_images = text('SELECT * FROM image WHERE product_id = :product_id;')
+            valores_images = {"product_id": id}
+            images = [row.image for row in session.execute(consulta_images, valores_images)]
 
             consulta_materials = text('SELECT * FROM material WHERE product_id = :product_id;')
             valores_materials = {"product_id": id}
@@ -280,7 +316,7 @@ def get_product(id: str):
             valores_characteristics = {"product_id": id}
             characteristics = [row.characteristic for row in session.execute(consulta_characteristics, valores_characteristics)]
 
-            product["urls"] = urls
+            product["images"] = images
             product["materials"] = materials
             product["characteristics"] = characteristics
 
@@ -361,8 +397,6 @@ def search_products(key_word: str):
 )
 def filter_products(materials: str):
     try:
-        print(materials)
-        
         consulta = text("SELECT product_id FROM material WHERE material = :material")
         results = session.execute(consulta, {"material" : materials}).fetchall()
         

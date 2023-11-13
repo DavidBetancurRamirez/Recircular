@@ -1,6 +1,6 @@
 from sqlalchemy import Table, Column, ForeignKey, UniqueConstraint, Index, MetaData
 from config.db import meta, engine
-from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Float, ARRAY, Boolean
+from sqlalchemy.sql.sqltypes import Integer, String, DateTime, Float, ARRAY, Boolean, BLOB
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.mysql import *
 import uuid
@@ -13,6 +13,7 @@ users = Table("user", meta,
              Column("password", String(360), nullable=False), 
              Column("phone", String(16)), 
              Column("ShippingAddress_id", Integer, ForeignKey('shipping_address.id')), 
+             Column("address", String(240)),
              Column("status", Boolean, nullable=False),
              Column("date_created", DateTime, nullable=False), 
              Column("date_updated", DateTime), 
@@ -43,10 +44,10 @@ products = Table("product", meta,
 )
 
 
-urls = Table("url", meta,
+images = Table("image", meta,
     Column("id", String(36), primary_key=True),
     Column("product_id", String(36), ForeignKey("product.id"), nullable=False),
-    Column("url", String(255), nullable=False),
+    Column("image", BLOB, nullable=False),
     Index('product_id_idx', 'product_id')
 )
 

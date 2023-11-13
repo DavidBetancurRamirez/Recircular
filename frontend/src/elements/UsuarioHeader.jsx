@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { GiShoppingCart } from "react-icons/gi"
 import { FaUserCircle } from "react-icons/fa";
 import { useUser } from "../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 const ContenedorUsuario = styled.div`
     display: flex;
@@ -36,12 +37,14 @@ const Usuario = styled.div`
 `
 
 const UsuarioHeader = () => {
-    const { user } = useUser();
+    const navigate = useNavigate();
+    const { nombreUsuario } = useUser();
 
     return (
         <ContenedorUsuario>
             <Usuario>
-                <p>{user ? user.username : "Anonymous"}</p>
+                <p onClick={() => navigate("/sesion")}>Iniciar Sesión</p>
+                <p>{nombreUsuario}</p>
                 <FaUserCircle />
             </Usuario>
             <GiShoppingCart />
