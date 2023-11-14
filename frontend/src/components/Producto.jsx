@@ -88,7 +88,7 @@ const Producto = () => {
                             })}
                         </ContenedorScroll>
                         <h2>Aserrin</h2>
-                        <p>Somos una empresa que trabaja con madera y nos sobra gran cantidad de aserrín de nuestra producción.</p>
+                        <p></p>
                         <Caracteristicas />
                     </Contenedor>
                 </Mitad>

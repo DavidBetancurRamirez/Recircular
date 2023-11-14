@@ -10,9 +10,10 @@ import LogoP from "../images/logo_blanco.png";
 import colores from "../styles/colores";
 import { Formulario, Input } from "../styles/varios";
 import { useNavigate } from "react-router-dom";
+import Imagen from "../images/fondo-sesion.jpg";
 
 const Fondo = styled.div`
-    background-color: ${colores.azulClaro};
+    background-image: url(${Imagen});
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
@@ -21,7 +22,7 @@ const Fondo = styled.div`
     padding: 80px;
 
     @media (max-width: 800px) { padding: 30px; }
-`
+`;
 
 const Header = styled.button`
     background-color: ${props => (props.$inLogin ? colores.moradoClaro : colores.oscuro)};
@@ -38,19 +39,21 @@ const Header = styled.button`
     color: #fff;
 `;
 
-const Contenedor1= styled.div`
-    margin: auto;
-    max-width: 1000px;
-    width: 100%;
-    border-radius:  20px;
-`;
-const Contenedor = styled.div`
-    background-color: ${colores.moradoClaro};
+const Contenedor1 = styled.div`
+    background-color: ${colores.azulClaro};
     display: flex;
     flex-direction: column;
     padding: 20px;
-   
-    border-radius: 20px 20px;
+    border-radius: 0 0 20px 20px;
+
+    > form { align-items: center; }
+`;
+const Contenedor = styled.div`
+    background-color: ${colores.azulClaro};
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 0 0 20px 20px;
 
     > form { align-items: center; }
 `;
@@ -132,7 +135,7 @@ const CambioC = () => {
             if (typeof respuesta === "string") newMessage(respuesta, "error");
             else {
                 newMessage("Cambio de contraseña exitoso", "exito");
-                // Clear localstorage
+                localStorage.clear()
                 navigate("/sesion")
             } 
     } catch (error) {
@@ -191,7 +194,6 @@ const CambioC = () => {
                         />
                         <RiLockPasswordFill />
                     </ContInput>
-                    
                 <Boton>Confirmar</Boton>
                 
             </Formulario>

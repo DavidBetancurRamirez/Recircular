@@ -43,8 +43,10 @@ const UsuarioHeader = () => {
     return (
         <ContenedorUsuario>
             <Usuario>
-                <p onClick={() => navigate("/sesion")}>Iniciar Sesión</p>
-                <p>{nombreUsuario}</p>
+                <p onClick={() => navigate("/sesion")}>LogIn</p>
+            </Usuario>
+            <Usuario>
+                <p onClick={() => navigate("/perfil")}>{nombreUsuario}</p>
                 <FaUserCircle />
             </Usuario>
             <GiShoppingCart />

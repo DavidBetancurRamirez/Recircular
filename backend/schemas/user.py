@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
+from fastapi import File, UploadFile, Form
 
 class User(BaseModel):
     id: Optional[str] = None
@@ -33,8 +34,8 @@ class Product(BaseModel):
     characteristics: list[str]
     images: list[str] 
     materials: list[str] 
-    status: bool
-    date_created: datetime
+    status: Optional[bool] = None
+    date_created: Optional[datetime] = None
 
 
 class Change(BaseModel):

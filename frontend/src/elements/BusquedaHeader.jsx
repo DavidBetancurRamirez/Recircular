@@ -4,6 +4,8 @@ import styled from "styled-components";
 import colores from "../styles/colores";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2"
 import Filtros from "./Filtros";
+import { useUser, UserContextProvider } from "../context/userContext"
+import { useMessage } from "../context/messageContext";
 
 const ContenedorBusqueda = styled.form`
     display: flex;
@@ -56,8 +58,26 @@ const BtnBuscar = styled.button`
 const BusquedaHeader = () => {
     const [busqueda, setBusqueda] = useState("");
 
+    const { searchProduct } = useUser();
+
+    const { newMessage } = useMessage();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        try {
+
+            const respuesta = await searchProduct(busqueda)
+
+            console.log(respuesta)
+
+            if (typeof respuesta === 'string') newMessage(respuesta, "error");
+            else{
+                newMessage("Exitoso", "exito")
+            } 
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (

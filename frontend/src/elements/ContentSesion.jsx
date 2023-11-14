@@ -122,7 +122,10 @@ const ContentSesion = ({ inLogin }) => {
             }
             console.log(respuesta)
             if (typeof respuesta === 'string') newMessage(respuesta, "error");
-            else navigate("/")
+            else{
+                navigate("/")
+                window.location.reload()
+            } 
         } catch (error) {
             console.log(error);
             newMessage("Intentelo más tarde", "error");

@@ -17,7 +17,7 @@ const ContenedorBotones = styled.div`
     margin: 20px;
 
     button {
-        width: 150px;
+        width: 180px;
         height: 30px;
         border: none;
         border-radius: 20px;
@@ -38,7 +38,7 @@ const ContenedorBotones = styled.div`
 
 const Perfil = () => {
     const [imagenes, cambiarImagenes] = useState([])
-
+    const [initialLoad, setInitialLoad] = useState(true);
     const [email, cambiarEmail] = useState("")
     const [password, cambiarPassword] = useState("");
     const [nombre, cambiarNombre] = useState("");
@@ -52,30 +52,38 @@ const Perfil = () => {
 
     const navigate = useNavigate();
 
+
+
     useEffect(() => {
+        if (initialLoad) {
+            setInitialLoad(false);
+        } else {
+            // Realiza las acciones que deseas al cambiar de ruta después de la carga inicial
+            console.log("Cambiaste de ruta después de la carga inicial");
+        }
         if (emailUsuario)
             cambiarEmail(emailUsuario)
-    })
+        if (nombreUsuario)
+            cambiarNombre(nombreUsuario)
+        if (phoneUsuario)
+            cambiarTelefono(phoneUsuario)
+        if (addressUsuario)
+            cambiarDireccion(addressUsuario)
+    }, [nombreUsuario, phoneUsuario, addressUsuario, initialLoad])
     
     const handleActualizar = async () => {
         try {
-            console.log(nombre)
-            if (nombre == "")
-                cambiarNombre(nombreUsuario)
-            if (telefono == "")
-                cambiarTelefono(phoneUsuario)
-            if (direccion == "")
-                cambiarDireccion(addressUsuario)
-            console.log(nombre)
-
             const response = await editUser({
-                username: "Loperatomas",
+                username: nombre,
                 phone: telefono,
                 address: direccion
             })
 
             if (typeof respuesta === 'string') newMessage(respuesta, "error");
-            else newMessage("Actualización exitosa", "exito")
+            else {
+                newMessage("Actualización exitosa", "exito")
+                window.location.reload()
+            }
         } catch (error) {
             console.error(error)
         }
@@ -87,8 +95,8 @@ const Perfil = () => {
             if (typeof respuesta === 'string') newMessage(respuesta, "error");
             else{
                 newMessage("Eliminacion exitosa", "exito")
-                // Clear localstorage
-                navigate("/")
+                localStorage.clear()
+                navigate("/sesion")
             }
         } catch (error) {
             console.error(error)
@@ -131,7 +139,8 @@ const Perfil = () => {
                         <Input
                             name = "Nombre"
                             type="text"
-                            placeholder={nombreUsuario}
+                            placeholder="Nombre de Usuario"
+                            value={nombre}
                             onChange={(e) => cambiarNombre(e.target.value)}
                         />
                     </ContenedorInput>
@@ -139,9 +148,10 @@ const Perfil = () => {
                     <ContenedorInput>
                         <h3>Telefono</h3>
                         <Input
-                            name = "telefono"
+                            name = "Telefono"
                             type="text"
-                            placeholder={phoneUsuario != "" ? phoneUsuario : "Telefono"}
+                            placeholder="Telefono"
+                            value={telefono}
                             onChange={(e) => cambiarTelefono(e.target.value)}
                         />
                     </ContenedorInput>
@@ -151,7 +161,8 @@ const Perfil = () => {
                         <Input
                             name = "Direccion"
                             type="text"
-                            placeholder={addressUsuario != "" ? addressUsuario : "Dirección"}
+                            placeholder="Dirección"
+                            value={direccion}
                             onChange={(e) => cambiarDireccion(e.target.value)}
                         />
                     </ContenedorInput>

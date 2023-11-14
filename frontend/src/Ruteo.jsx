@@ -7,7 +7,6 @@ import Sesion from './components/Sesion';
 import Agregar from './components/Agregar';
 import Producto from './components/Producto';
 import Perfil from './components/Perfil';
-import CambioC from './components/CambioC';
 
 const Ruteo = () => {
     useEffect(() => {
@@ -27,7 +26,6 @@ const Ruteo = () => {
                 <Route path='/agregar' element={<Agregar />} />
                 <Route path='/producto' element={<Producto />} />
                 <Route path='/perfil' element={<Perfil/>} />
-                <Route path='/cambio' element={<CambioC/>} />
             </Routes>
         </BrowserRouter>
     )

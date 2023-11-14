@@ -2,6 +2,7 @@ import axios from "axios"
 
 import { createContext, useContext, useState } from "react"
 import { validarEmail, validarPassword } from "../functions/Formularios";
+import { uploadFile, getFile } from "../firebase/config"
 
 const API_BASE_URL = 'http://localhost:8000';
 const userContext = createContext();
@@ -23,7 +24,6 @@ export const UserContextProvider = (props) => {
         localStorage.setItem("userData", usuario.id);
         localStorage.setItem("nombreUsuario", usuario.username)
         localStorage.setItem("emailUsuario", usuario.email)
-        console.log(usuario.phone)
         localStorage.setItem("phoneUsuario", usuario.phone)
         localStorage.setItem("addressUsuario", usuario.address)
     };
@@ -88,7 +88,9 @@ export const UserContextProvider = (props) => {
 
     const deleteUser = async () => {
         try {
-            const response = await axios.put(API_BASE_URL + "/delete/" + id);
+            const return_id = localStorage.getItem("userData");
+
+            const response = await axios.put(API_BASE_URL + "/delete/" + return_id);
             return response ? "Se elimino correctamente" : "Ocurrio un error, intentelo más tarde";
         } catch (error) {
             console.error(error)
@@ -140,17 +142,48 @@ export const UserContextProvider = (props) => {
         }
     }
 
-    const addProduct = async ( id, product) => {
+    const addProduct = async ( nombre, descripcion, caracteristicas, materiales, images ) => {
         try {
+            var uuid_array = [];
 
-            const response = await axios.post(`${API_BASE_URL}/add_product`, 
-                                id, 
-                                product
-                                );
+            for (var i = 0; i < images.length; i++) {
+                uuid_array.push(uploadFile(images[i]))
+            }
+
+            const return_id = localStorage.getItem("userData");
+
+            const response = await axios.post(`${API_BASE_URL}/add_product`, {
+                                        "user_id": return_id,
+                                        name: nombre,
+                                        description: descripcion,
+                                        characteristics: caracteristicas,
+                                        images: uuid_array,
+                                        materials: materiales.map(objeto => objeto.nombre),
+                                        });
 
             if (response.data == null)  return "Producto no creado";
 
             return response.data;
+        } catch (error) {
+            console.error(error)
+            console.log("Intentelo más tarde")
+        }
+    }
+
+    const searchProduct = async ( busqueda ) => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/search/products/` + busqueda)
+
+            if (response.data == null)  return "No existen productos";
+
+            const productos = response.data;
+            console.log(productos[0].images[0])
+
+            for (var i = 0; i < productos[0].images.length; i++) {
+                console.log(getFile(productos[0].images[i]))
+            }
+            
+            return productos;
         } catch (error) {
             console.error(error)
             console.log("Intentelo más tarde")
@@ -169,6 +202,7 @@ export const UserContextProvider = (props) => {
                 setUser,
                 addProduct,
                 change_password,
+                searchProduct,
                 nombreUsuario,
                 emailUsuario,
                 phoneUsuario,

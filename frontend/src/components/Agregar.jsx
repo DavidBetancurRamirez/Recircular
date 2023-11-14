@@ -8,6 +8,7 @@ import styled from "styled-components";
 import colores from "../styles/colores";
 import { ContenedorSombra, Formulario, Input, InputFlexible, Mitad } from "../styles/varios";
 import { useUser, UserContextProvider } from "../context/userContext"
+import { useMessage } from "../context/messageContext";
 
 const ContenedorInput = styled.div`
     display: flex;
@@ -41,18 +42,29 @@ const Agregar = () => {
     const [descripcion, cambiarDescripcion] = useState("");
     const [caracteristicas, cambiarCaracteristicas] = useState([""]);
 
-    const { user, addProduct, getStorage } = useUser();
+    const { user, addProduct } = useUser();
 
-    const handleAgregar = async () => {
+    const { newMessage } = useMessage();
+
+    const handleAgregar = async (e) => {
+        e.preventDefault();
+
         try {
-            console.log(getStorage())
-            const response = await addProduct(getStorage(), {
-                username: nombre,
-                description: descripcion,
-                characteristics: caracteristicas,
-                urls: urls,
-                materials: materiales
-            })
+
+            const respuesta = await addProduct(
+                nombre,
+                descripcion,
+                caracteristicas,
+                materiales,
+                imagenes
+            )
+
+            console.log(respuesta)
+            if (typeof respuesta === 'string') newMessage(respuesta, "error");
+            else{
+                newMessage("Producto creado exitosamente", "exito")
+                window.location.reload()
+            } 
         } catch (error) {
             console.error(error)
         }
@@ -62,7 +74,7 @@ const Agregar = () => {
         <Layout>
             <ContenedorSombra>
                 <h2>Agregar Producto</h2>
-                <Formulario>
+                <Formulario onSubmit={handleAgregar}>
                     <ContenedorInput>
                         <h3>Nombre</h3>
                         <Input 

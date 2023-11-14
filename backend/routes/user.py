@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
+from fastapi import File, UploadFile, Form
 from config.db import conn, session
 from models.user import users as user_table
 from schemas.user import User, ShippingAddress, Product, Change
@@ -6,6 +7,7 @@ from datetime import datetime
 from sqlalchemy import select, text
 from passlib.context import CryptContext
 from typing import List
+from azure.storage.blob import BlobServiceClient
 import bcrypt
 import uuid
 
@@ -157,8 +159,8 @@ def change_password(c : Change):
             consulta = text('SELECT password FROM user WHERE user.email = :email')
             stored_password = session.execute(consulta, {'email': c.email}).scalar()
             if pwd_context.verify(c.old_password, stored_password):
-                consulta = text("UPDATE user SET user.password = :new_password")
-                session.execute(consulta, {"new_password" : pwd_context.hash(c.new_password)})
+                consulta = text("UPDATE user SET user.password = :new_password WHERE user.id = :id")
+                session.execute(consulta, {"new_password" : pwd_context.hash(c.new_password), "id" : user_id})
                 session.commit()
                 consulta = text("SELECT * FROM user WHERE user.id = :id")
                 return session.execute(consulta, {"id" : user_id}).first()._asdict()    
@@ -217,28 +219,16 @@ def update_shipping_address(id: str, s: ShippingAddress):
         session.close()
 
 
-# Convertir archivo a binario
-def convert_to_binary(filename):
-    with open(filename, 'rb') as f:
-        binarydata = f.read()
-    return binarydata
-
-
-# Convertir binario a archivo
-def convert_to_file(binarydata, filename):
-    with open(filename, 'wb') as f:
-        f.write(binarydata)
-
-
 # Agregar Producto
 @user.post(
     "/add_product", tags=["users"], description="Add a Product"
 )
-def add_product(id: str, p: Product):
+def add_product(p: Product):
     try:
         new_id = str(uuid.uuid4())
+        
         consulta = text('INSERT INTO product VALUES (:id, :user_id, :name, :description, :status, :date_created);')
-        valores = {"id": new_id, "user_id": id, "name": p.name, "description": p.description, "status": True, "date_created": datetime.now()}
+        valores = {"id": new_id, "user_id": p.user_id, "name": p.name, "description": p.description, "status": True, "date_created": datetime.now()}
         session.execute(consulta, valores)
         
         for img in p.images:
@@ -271,7 +261,7 @@ def add_product(id: str, p: Product):
   "name": "Aserrin",
   "description": "Somos una empresa que trabaja con madera y nos sobra gran cantidad de aserrín de nuestra producción",
   "characteristics": ["Varios tipos de madera", "100% madera seca", "Textura lisa"],
-  "urls": [
+  "images": [
     "https://www.youtube.com/watch?v=iDZA-cps21o&ab_channel=DataCamp", "https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"
   ],
   "materials": [
@@ -357,7 +347,33 @@ def get_products_user(username: str):
         return None
     finally:
         session.close()
+
+
+# Mostrar todos los productos (Página principal)
+@user.get("/products", 
+        tags=["products"],
+        description="Get all products")
+def get_products():
+    try:
+        consulta = text("SELECT * FROM product;")
+        results = session.execute(consulta, None).fetchall()
         
+        if results:
+            products = {}
+            i = 0
+            for row in results:
+                products[i] = get_product(row[0])
+                i += 1    
+            
+            return list(products.values())
+        else:
+            return None
+    except Exception as e:
+        print(f"Error al insertar en la base de datos: {e}")
+        return None
+    finally:
+        session.close()
+
 
 # Búsqueda de productos (Usando el buscador)
 @user.get(

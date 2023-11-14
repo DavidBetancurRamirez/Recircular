@@ -47,7 +47,7 @@ products = Table("product", meta,
 images = Table("image", meta,
     Column("id", String(36), primary_key=True),
     Column("product_id", String(36), ForeignKey("product.id"), nullable=False),
-    Column("image", BLOB, nullable=False),
+    Column("image", String(1024), nullable=False),
     Index('product_id_idx', 'product_id')
 )
 
