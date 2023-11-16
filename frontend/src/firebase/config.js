@@ -21,30 +21,22 @@ export function uploadFile(file) {
     const storageRef = ref(storage, nuevoUUID)
 
     uploadBytes(storageRef, file).then((snapshot) => {
+      console.log(snapshot)
     });
 
     return nuevoUUID
 }
 
-export function getFile(name){
-  getDownloadURL(ref(storage, name))
-  .then((url) => {
-    return fetch(url);
-  })
-  .then((response) => {
-    return response.blob();
-  })
-  .then((blob) => {
-    const file = new File([blob], name, { type: blob.type });
+export async function getFile(name){
+    try {
+      const downloadURL = await getDownloadURL(ref(storage, name));
 
-    console.log(file)
+      const imgElement = document.createElement('img');
+      imgElement.src = downloadURL;
 
-    const img = document.getElementById('myimg');
-    img.src = URL.createObjectURL(file);
-
-    console.log(img.src)
-  })
-  .catch((error) => {
-    console.error('Error al obtener la imagen:', error);
-  });
+      return imgElement;
+    } catch (error) {
+        console.error('Error al obtener la imagen:', error);
+        throw error;
+    }
 }

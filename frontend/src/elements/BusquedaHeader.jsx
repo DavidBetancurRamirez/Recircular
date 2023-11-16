@@ -73,6 +73,7 @@ const BusquedaHeader = () => {
 
             if (typeof respuesta === 'string') newMessage(respuesta, "error");
             else{
+                console.log(respuesta.data)
                 newMessage("Exitoso", "exito")
             } 
         } catch (error) {
