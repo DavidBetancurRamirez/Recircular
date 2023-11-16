@@ -2,7 +2,7 @@ import axios from "axios"
 
 import { createContext, useContext, useState } from "react"
 import { validarEmail, validarPassword } from "../functions/Formularios";
-import { uploadFile, getFile } from "../firebase/config"
+import { uploadFile } from "../firebase/config"
 
 const API_BASE_URL = 'http://localhost:8000';
 const userContext = createContext();
@@ -28,10 +28,10 @@ export const UserContextProvider = (props) => {
         localStorage.setItem("addressUsuario", usuario.address)
     };
 
-    const getUser = async () => {
+    const getUser = async (id) => {
         try {
             const return_id = localStorage.getItem("userData");
-            const response = await axios.get(`${API_BASE_URL}/users/${return_id}`);
+            const response = await axios.get(`${API_BASE_URL}/users/${id}`);
             return response.data;
         } catch (error) {
             console.error(error)
@@ -190,6 +190,21 @@ export const UserContextProvider = (props) => {
         }
     }
 
+    const getAllProducts = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/products`)
+
+            if (response.data == null)  return "No existen productos";
+
+            const productos = response.data;
+            
+            return productos;
+        } catch (error) {
+            console.error(error)
+            console.log("Intentelo más tarde")
+        }
+    }
+
     return (
         <userContext.Provider
             value={{
@@ -203,6 +218,7 @@ export const UserContextProvider = (props) => {
                 addProduct,
                 change_password,
                 searchProduct,
+                getAllProducts,
                 nombreUsuario,
                 emailUsuario,
                 phoneUsuario,

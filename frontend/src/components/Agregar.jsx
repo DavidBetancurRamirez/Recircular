@@ -59,11 +59,10 @@ const Agregar = () => {
                 imagenes
             )
 
-            console.log(respuesta)
             if (typeof respuesta === 'string') newMessage(respuesta, "error");
             else{
                 newMessage("Producto creado exitosamente", "exito")
-                window.location.reload()
+                // window.location.reload()
             } 
         } catch (error) {
             console.error(error)

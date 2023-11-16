@@ -29,16 +29,16 @@ def get_users():
 
 # Mostrar un Usuario
 @user.get(
-    "/users/{username}",
+    "/users/{id}",
     tags=["users"],
     description="Get a single user by Username",
 )
-def get_user(username: str):
+def get_user(id: str):
     try:
-        consulta = text("SELECT * FROM user WHERE user.username = :username")
-        user_return = session.execute(consulta, {"username" : username}).first()
+        consulta = text("SELECT username FROM user WHERE user.id = :id")
+        user_return = session.execute(consulta, {"id" : id}).fetchone()[0]
         if user_return is not None:
-            return user_return._asdict()
+            return user_return
         else:
             return None
     except Exception as e:

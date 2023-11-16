@@ -4,7 +4,7 @@ import { GiShoppingCart } from "react-icons/gi"
 
 const BotonAgregar = styled.button`
     height: ${props => (props.size=="small" ? "30px" : "40px")};
-    width: ${props => (props.size=="small" ? "100px" : "120px")};
+    width: ${props => (props.size=="small" ? "40px" : "50px")};
     border: none;
     border-radius: 20px;
     background-color: ${colores.azulOscuro};
@@ -28,7 +28,6 @@ const BotonAgregar = styled.button`
 const BtnAgregar = ({ size }) => {
     return (
         <BotonAgregar size={size}>
-            Agregar
             <GiShoppingCart />
         </BotonAgregar>
     )
