@@ -177,13 +177,23 @@ export const UserContextProvider = (props) => {
             if (response.data == null)  return "No existen productos";
 
             const productos = response.data;
-            console.log(productos[0].images[0])
-
-            for (var i = 0; i < productos[0].images.length; i++) {
-                console.log(getFile(productos[0].images[i]))
-            }
             
             return productos;
+        } catch (error) {
+            console.error(error)
+            console.log("Intentelo más tarde")
+        }
+    }
+
+    const getProduct = async ( id ) => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/product/` + id)
+
+            if (response.data == null)  return "Hubo Error Obteniendo el Producto";
+
+            const producto = response.data;
+            
+            return producto;
         } catch (error) {
             console.error(error)
             console.log("Intentelo más tarde")
@@ -219,6 +229,7 @@ export const UserContextProvider = (props) => {
                 change_password,
                 searchProduct,
                 getAllProducts,
+                getProduct,
                 nombreUsuario,
                 emailUsuario,
                 phoneUsuario,

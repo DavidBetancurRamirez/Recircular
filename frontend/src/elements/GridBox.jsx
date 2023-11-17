@@ -5,12 +5,15 @@ import { useUser, UserContextProvider } from "../context/userContext"
 import { useMessage } from "../context/messageContext";
 import { useState } from "react";
 import { getFile } from "../firebase/config"
+import { useNavigate } from "react-router-dom";
+import Producto from '../components/Producto';
 
 const GridBox= () => {
-    const { searchProduct, getAllProducts } = useUser()
+    const { searchProduct, getAllProducts, getProduct } = useUser()
     const { newMessage } = useMessage();
     const [ productos, setProductos ] = useState([])
-    const [ archivos, setArchivos ] = useState([])
+    const [ nombre, setNombre ] = useState("")
+    const navigate = useNavigate();
 
     useEffect(() => {
         const obtenerProductos = async () => {
@@ -25,6 +28,37 @@ const GridBox= () => {
         obtenerProductos();
     }, [getAllProducts]);
 
+    const handleNombreProductoClick = async (nombre_usuario) => {
+        try {
+            const productoObtenido = await getProduct(nombre_usuario);
+
+            console.log("Datos del producto a enviar:", {
+                nombre: productoObtenido.name,
+                imagenes: productoObtenido.images,
+                mat: productoObtenido.materials,
+                nombre_usuario: productoObtenido.user_id,
+                caracteristicas: productoObtenido.characteristics,
+                email: productoObtenido.user_email,
+                telefono: productoObtenido.user_phone
+            });
+
+            navigate("/producto", {
+                        state: {
+                            nombre: productoObtenido.name,
+                            imagenes: productoObtenido.images,
+                            mat: productoObtenido.materials,
+                            nombre_usuario: productoObtenido.user_id,
+                            caracteristicas: productoObtenido.characteristics,
+                            email: productoObtenido.user_email,
+                            telefono: productoObtenido.user_phone
+                        },
+                    });
+        } catch (error) {
+            console.log(error)
+            newMessage("Inténtelo más tarde", "error");
+        }
+    };
+
 
     return (
         <div>
@@ -32,14 +66,8 @@ const GridBox= () => {
                 <Box sx ={{ py: 4 }}>
                     <Grid container rowSpacing={2} spacing={{ xs: 1, sm: 2 }}> 
                     {productos.map((producto, index)=>(
-                        <PoductBox nombre={producto.name} imagenes={producto.images} materiales={producto.materiales} nombre_usuario={"Hola"}/>
+                        <PoductBox nombre={producto.name} imagenes={producto.images} mat={producto.materials} nombre_usuario={producto.user_id} caracteristicas={producto.characteristics} onClick={() => handleNombreProductoClick(producto.id)}/>
                     ))}
-                        {/* <PoductBox />
-                        <PoductBox />
-                        <PoductBox />
-                        <PoductBox />
-                        <PoductBox /> */}
-
                     </Grid>
                 </Box>
             </Container>
