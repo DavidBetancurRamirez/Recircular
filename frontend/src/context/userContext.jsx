@@ -161,6 +161,8 @@ export const UserContextProvider = (props) => {
                                         materials: materiales.map(objeto => objeto.nombre),
                                         });
 
+            console.log(response.data)
+
             if (response.data == null)  return "Producto no creado";
 
             return response.data;
@@ -189,7 +191,7 @@ export const UserContextProvider = (props) => {
         try {
             const id = localStorage.getItem("idProducto");
 
-            const response = await axios.get(`${API_BASE_URL}/uniqueproduct/` + id)
+            const response = await axios.get(`${API_BASE_URL}/product/` + id)
 
             if (response.data == null)  return "Hubo Error Obteniendo el Producto";
 

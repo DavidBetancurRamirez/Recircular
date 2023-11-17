@@ -21,14 +21,12 @@ const ContenedorImagen = styled.article`
     @media (max-width: 500px) { height: 250px; }
 `
 
-
 const ImgProducto = () => {
 
     // {imagenes = []}
     
     const { getUser } = useUser();
     const { newMessage } = useMessage();
-    const [ archivos, setArchivos ] = useState('')
 
     const imagenes = [
         "9c89e28d-dab3-4334-8f65-e04f057c70a4",
@@ -41,9 +39,9 @@ const ImgProducto = () => {
             const imageContainer = document.getElementById(`imageContainer-${imagenes}`);
             for (var i = 0; i < imagenes.length; i++) {
                 storage.push(await getFile(imagenes[i]))
+                console.log(storage[i])
                 imageContainer.appendChild(storage[i])
             }
-            setArchivos(storage)
         }
         get_imagenes();
     }, [getFile, getUser]);

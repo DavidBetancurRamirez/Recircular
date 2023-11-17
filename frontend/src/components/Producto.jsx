@@ -38,7 +38,7 @@ const Producto = () => {
             try {
                 const productoObtenido = await getProduct();
                 if (typeof respuesta === 'string') newMessage(respuesta, "error");
-                else setProducto(productoObtenido[0]);
+                else setProducto(productoObtenido);
                 console.log(productoObtenido[0])
             } catch (error) {
                 newMessage("Inténtelo más tarde", "error");
@@ -52,8 +52,8 @@ const Producto = () => {
             <ContenedorSombra>
                 <Mitad>
                     <Contenedor>
-                        <ImgProducto imagenes={p.images} />
-                        {/* <ImgProducto></ImgProducto> */}
+                        {/* <ImgProducto imagenes={p.images} /> */}
+                        <ImgProducto></ImgProducto>
                         {/* <BtnAgregar /> */}
                         <InfoContacto nombre_usuario={p.user_id} email={p.user_email} telefono={p.user_phone}/>
                     </Contenedor>
