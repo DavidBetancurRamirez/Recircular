@@ -361,6 +361,30 @@ def get_products_user(username: str):
 
 
 # Mostrar todos los productos (Página principal)
+@user.get("/uniqueproduct/{id}", 
+        tags=["products"],
+        description="Get all products")
+def get_products(id: str):
+    try:
+        consulta = text("SELECT * FROM product WHERE product.id = :id;")
+        results = session.execute(consulta, {"id" : id}).fetchall()
+        
+        if results:
+            products = {}
+            i = 0
+            for row in results:
+                products[i] = get_product(row[0])
+                i += 1    
+            
+            return list(products.values())
+        else:
+            return None
+    except Exception as e:
+        print(f"Error al insertar en la base de datos: {e}")
+        return None
+    finally:
+        session.close()
+        
 @user.get("/products", 
         tags=["products"],
         description="Get all products")

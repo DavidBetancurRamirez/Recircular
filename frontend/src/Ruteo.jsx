@@ -24,7 +24,7 @@ const Ruteo = () => {
                 <Route path='/' element={<App />} />
                 <Route path='/sesion' element={<Sesion />} />
                 <Route path='/agregar' element={<Agregar />} />
-                <Route path='/producto' element={<Producto />} component={Producto} />
+                <Route path='/producto' element={<Producto />}/>
                 <Route path='/perfil' element={<Perfil/>} />
             </Routes>
         </BrowserRouter>
