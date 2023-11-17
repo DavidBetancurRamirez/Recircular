@@ -185,9 +185,11 @@ export const UserContextProvider = (props) => {
         }
     }
 
-    const getProduct = async ( id ) => {
+    const getProduct = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/product/` + id)
+            const id = localStorage.getItem("idProducto");
+
+            const response = await axios.get(`${API_BASE_URL}/uniqueproduct/` + id)
 
             if (response.data == null)  return "Hubo Error Obteniendo el Producto";
 

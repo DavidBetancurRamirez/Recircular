@@ -28,31 +28,10 @@ const GridBox= () => {
         obtenerProductos();
     }, [getAllProducts]);
 
-    const handleNombreProductoClick = async (nombre_usuario) => {
+    const handleNombreProductoClick = async (id) => {
         try {
-            const productoObtenido = await getProduct(nombre_usuario);
-
-            console.log("Datos del producto a enviar:", {
-                nombre: productoObtenido.name,
-                imagenes: productoObtenido.images,
-                mat: productoObtenido.materials,
-                nombre_usuario: productoObtenido.user_id,
-                caracteristicas: productoObtenido.characteristics,
-                email: productoObtenido.user_email,
-                telefono: productoObtenido.user_phone
-            });
-
-            navigate("/producto", {
-                        state: {
-                            nombre: productoObtenido.name,
-                            imagenes: productoObtenido.images,
-                            mat: productoObtenido.materials,
-                            nombre_usuario: productoObtenido.user_id,
-                            caracteristicas: productoObtenido.characteristics,
-                            email: productoObtenido.user_email,
-                            telefono: productoObtenido.user_phone
-                        },
-                    });
+            localStorage.setItem("idProducto", id);
+            navigate("/producto");
         } catch (error) {
             console.log(error)
             newMessage("Inténtelo más tarde", "error");

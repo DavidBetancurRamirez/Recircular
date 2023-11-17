@@ -22,11 +22,18 @@ const ContenedorImagen = styled.article`
 `
 
 
-const ImgProducto = ({imagenes = []}) => {
+const ImgProducto = () => {
+
+    // {imagenes = []}
     
     const { getUser } = useUser();
     const { newMessage } = useMessage();
     const [ archivos, setArchivos ] = useState('')
+
+    const imagenes = [
+        "9c89e28d-dab3-4334-8f65-e04f057c70a4",
+        "fc1bec29-d685-48b3-a4b3-93ffa0fe7457"
+    ]
 
     useEffect(() => {
         const get_imagenes = async () => {
