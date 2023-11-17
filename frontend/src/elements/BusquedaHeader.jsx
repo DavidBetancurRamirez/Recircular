@@ -69,8 +69,6 @@ const BusquedaHeader = () => {
 
             const respuesta = await searchProduct(busqueda)
 
-            console.log(respuesta)
-
             if (typeof respuesta === 'string') newMessage(respuesta, "error");
             else{
                 console.log(respuesta.data)

@@ -35,20 +35,20 @@ const Info = styled.div`
     }
 `
 
-const InfoContacto = () => {
+const InfoContacto = ({ nombre_usuario, email, telefono }) => {
     return (
         <Contenedor>
             <img src={Img} alt="Imagen Primadera" />
             <div>
-                <h3>Primadera SAS</h3>
+                <h3>{nombre_usuario}</h3>
                 <Rating
                     value={4.5} 
                     precision={0.5}
                     readOnly
                     className="estrellas"
                 />
-                <Info><MdEmail />servicioalcliente@primadera.com</Info>
-                <Info><BsFillTelephoneFill />6016449873</Info>
+                <Info><MdEmail />{email}</Info>
+                <Info><BsFillTelephoneFill />{telefono}</Info>
             </div>
         </Contenedor>
     )

@@ -283,11 +283,22 @@ def get_product(id: str):
         consulta = text('SELECT * FROM product WHERE id = :id;')
         valores = {"id": id}
         result = session.execute(consulta, valores).fetchone()
+        
+        consulta_usuario = text("SELECT username FROM user WHERE user.id = :id")
+        user_id = session.execute(consulta_usuario, {"id" : result[1]}).fetchone()[0]
 
-        if result:
+        consulta_usuario = text("SELECT email FROM user WHERE user.id = :id")
+        user_email = session.execute(consulta_usuario, {"id" : result[1]}).fetchone()[0]
+        
+        consulta_usuario = text("SELECT phone FROM user WHERE user.id = :id")
+        user_phone = session.execute(consulta_usuario, {"id" : result[1]}).fetchone()[0]
+
+        if result and user_id:
             product = {
                 "id": result[0],
-                "user_id": result[1],
+                "user_id": user_id,
+                "user_email": user_email,
+                "user_phone": user_phone,
                 "name": result[2],
                 "description": result[3],
                 "status": result[4],

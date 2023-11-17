@@ -4,6 +4,12 @@ import { Carousel } from 'react-responsive-carousel';
 import Img1 from "../images/Producto/aserrin.jpg"
 import Img2 from "../images/Producto/aserrin1.jpg"
 import Img3 from "../images/Producto/aserrin2.jpg"
+import { useEffect } from "react";
+import { useUser, UserContextProvider } from "../context/userContext"
+import { useMessage } from "../context/messageContext";
+import { getFile } from "../firebase/config"
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const ContenedorImagen = styled.article`
     height: 300px;
@@ -16,8 +22,24 @@ const ContenedorImagen = styled.article`
 `
 
 
-const ImgProducto = () => {
-    const imagenes = [Img1, Img2, Img3]
+const ImgProducto = ({imagenes = []}) => {
+    
+    const { getUser } = useUser();
+    const { newMessage } = useMessage();
+    const [ archivos, setArchivos ] = useState('')
+
+    useEffect(() => {
+        const get_imagenes = async () => {
+            var storage = []
+            const imageContainer = document.getElementById(`imageContainer-${imagenes}`);
+            for (var i = 0; i < imagenes.length; i++) {
+                storage.push(await getFile(imagenes[i]))
+                imageContainer.appendChild(storage[i])
+            }
+            setArchivos(storage)
+        }
+        get_imagenes();
+    }, [getFile, getUser]);
 
     return (
         <Carousel
@@ -28,11 +50,8 @@ const ImgProducto = () => {
             autoPlay={true}
             interval={5000}
         >
-            {imagenes.map((imagen, i) => (
-                <ContenedorImagen key={i}>
-                    <img src={imagen} />
-                </ContenedorImagen>
-            ))}
+            <ContenedorImagen id={`imageContainer-${imagenes}`}>
+            </ContenedorImagen>
         </Carousel>
     )
 }
